@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>beki - CAFE</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FCE17A">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Paleta beki CAFE - El "Punto Caramelo" (Chill pero vivo) */
+            --bg-main: #FCE17A;  
+            --bg-card: #FCD34D;  
+            --accent: #F05A2B;   
+            --dark: #4A0E17;     
+            --dark-soft: rgba(74, 14, 23, 0.15); 
+            --white: #FFFFFF;
+            
+            /* Colores aurora adaptados */
+            --aurora-1: rgba(240, 90, 43, 0.15);
+            --aurora-2: rgba(74, 14, 23, 0.1);
+            --aurora-3: rgba(255, 255, 255, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            color: var(--dark);
+            position: relative;
+        }
+
+        /* === FONDO AURORA ANIMADO === */
+        .aurora-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            background: var(--bg-main);
+        }
+
+        .aurora-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: floatAurora 20s ease-in-out infinite;
+        }
+
+        .aurora-blob:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: var(--aurora-1);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .aurora-blob:nth-child(2) {
+            width: 350px;
+            height: 350px;
+            background: var(--aurora-2);
+            bottom: -50px;
+            right: -80px;
+            animation-delay: -5s;
+        }
+
+        .aurora-blob:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: var(--aurora-3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes floatAurora {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 10px) scale(1.02); }
+        }
+
+        /* === CONTENEDOR PRINCIPAL === */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* === PANTALLA REGISTRO === */
+        #pantallaRegistro {
+            display: none;
+            text-align: center;
+        }
+
+        .registro-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 48px 32px;
+            border: 3px solid var(--dark);
+            box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+        }
+
+        /* Nuevo contenedor animado para el texto + SVG */
+        .logo-animado {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 12px;
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            color: var(--accent);
+            font-size: 48px;
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        .welcome-text {
+            font-size: 15px;
+            color: var(--dark);
+            opacity: 0.8;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-top: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-label {
+            font-size: 13px;
+            color: var(--dark);
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+            opacity: 0.9;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 2px solid var(--dark-soft);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--dark);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        .input-box::placeholder {
+            color: var(--dark);
+            opacity: 0.4;
+        }
+
+        .input-box:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(240, 90, 43, 0.15);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 20px 32px;
+            border-radius: 16px;
+            border: 2px solid var(--accent);
+            background: var(--accent);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(240, 90, 43, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(240, 90, 43, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(240, 90, 43, 0.25);
+        }
+
+        #btnInstalarApp {
+            display: none; 
+            width: 100%;
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 16px;
+            border: 2px dashed var(--accent);
+            background: rgba(255, 255, 255, 0.4);
+            color: var(--dark);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #btnInstalarApp:hover {
+            background: rgba(240, 90, 43, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* === PANTALLA TARJETA === */
+        #pantallaTarjeta {
+            display: none;
+        }
+
+        .texto-girar {
+            text-align: center;
+            font-size: 13px;
+            color: var(--dark);
+            opacity: 0.7;
+            margin-bottom: 20px;
+            font-weight: 600;
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.9; }
+        }
+
+        /* === FLIP CARD === */
+        .flip-container {
+            perspective: 1500px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .flip-container.flipped .flipper {
+            transform: rotateY(180deg);
+        }
+
+        .flipper {
+            display: grid;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .front, .back {
+            grid-area: 1 / 1;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 24px;
+        }
+
+        .front { transform: rotateY(0deg); }
+        .back { transform: rotateY(180deg); }
+
+        /* === TARJETA PRINCIPAL === */
+        .wallet-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 32px;
+            border: 3px solid var(--dark);
+            box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 28px;
+        }
+
+        .logo-small {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 32px;
+            line-height: 0.9;
+            color: var(--accent);
+            letter-spacing: -1px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-nickname {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .user-tel-label {
+            font-size: 12px;
+            color: var(--dark);
+            opacity: 0.7;
+            font-weight: 600;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* === STAMPS/SELLOS === */
+        .stamps-container {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 2px dashed var(--dark-soft);
+        }
+
+        .stamps-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+            justify-items: center;
+        }
+
+        /* === TAZAS ANIMADAS === */
+        .stamp-cup {
+            width: 44px;
+            height: 44px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .stamp-cup .cup-path {
+            fill: none;
+            stroke: var(--dark-soft);
+            stroke-width: 2;
+            transition: all 0.4s ease;
+        }
+
+        .stamp-cup .cup-handle {
+            fill: none;
+            stroke: var(--dark-soft);
+            stroke-width: 4; 
+            stroke-linecap: round;
+            transition: all 0.4s ease;
+        }
+
+        .stamp-cup .coffee-fill {
+            fill: none;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .stamp-cup .steam-path {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 2;
+            stroke-linecap: round;
+            opacity: 0;
+        }
+
+        .stamp-cup.filled {
+            transform: scale(1.1);
+            filter: drop-shadow(0 4px 0px rgba(74, 14, 23, 0.15));
+        }
+
+        .stamp-cup.filled .cup-path {
+            fill: var(--dark);
+            stroke: var(--dark);
+        }
+
+        .stamp-cup.filled .cup-handle {
+            stroke: var(--dark);
+        }
+
+        .stamp-cup.filled .coffee-fill {
+            fill: var(--accent);
+            opacity: 1;
+            animation: fillUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .stamp-cup.filled .steam-path {
+            opacity: 0.8;
+            animation: steam 2.5s ease-in-out infinite;
+        }
+
+        @keyframes fillUp {
+            0% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+            100% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+        }
+
+        @keyframes steam {
+            0% { transform: translateY(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-15px); opacity: 0; }
+        }
+
+        .stamp-cup.filled:nth-child(1) { animation-delay: 0ms; }
+        .stamp-cup.filled:nth-child(2) { animation-delay: 50ms; }
+        .stamp-cup.filled:nth-child(3) { animation-delay: 100ms; }
+        .stamp-cup.filled:nth-child(4) { animation-delay: 150ms; }
+        .stamp-cup.filled:nth-child(5) { animation-delay: 200ms; }
+        .stamp-cup.filled:nth-child(6) { animation-delay: 250ms; }
+        .stamp-cup.filled:nth-child(7) { animation-delay: 300ms; }
+        .stamp-cup.filled:nth-child(8) { animation-delay: 350ms; }
+        .stamp-cup.filled:nth-child(9) { animation-delay: 400ms; }
+        .stamp-cup.filled:nth-child(10) { animation-delay: 450ms; }
+
+        .stamps-text {
+            text-align: center;
+            font-size: 12px;
+            color: var(--dark);
+            opacity: 0.8;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* === INFO ROW === */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            padding: 0 4px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: var(--dark);
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .info-value {
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--dark);
+        }
+
+        .info-value-points {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--accent);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .premio-listo {
+            color: var(--accent) !important;
+            animation: celebratePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes celebratePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* === QR SECTION === */
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qr-box {
+            background: var(--bg-card);
+            padding: 14px;
+            border-radius: 18px;
+            border: 2px solid var(--dark);
+        }
+
+        .qr-box img {
+            display: block;
+            width: 110px;
+            height: 110px;
+        }
+
+        .user-id {
+            font-size: 11px;
+            color: var(--dark);
+            opacity: 0.6;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* === DORSO TARJETA === */
+        .back {
+            background: var(--bg-card);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            border: 3px solid var(--dark);
+            box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
+            min-height: 500px;
+        }
+
+        .back-logo-animado {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .back-logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            color: var(--accent);
+            font-size: 56px;
+            letter-spacing: -2px;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .back-subtitle {
+            font-size: 16px;
+            color: var(--dark);
+            font-weight: 800;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-top: 12px;
+        }
+
+        /* === BOTON CERRAR SESION === */
+        .btn-cerrar {
+            margin-top: 32px;
+            background: none;
+            color: var(--dark);
+            opacity: 0.6;
+            border: none;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 16px;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cerrar:hover {
+            opacity: 1;
+            background: var(--dark-soft);
+        }
+
+        /* === ESTADOS === */
+        #cargando {
+            font-size: 15px;
+            text-align: center;
+            color: var(--dark);
+            opacity: 0.8;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: loadingDots 1.5s infinite;
+        }
+
+        @keyframes loadingDots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+        }
+
+        /* === MODAL === */
+        .custom-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(252, 225, 122, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .custom-modal-box {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 36px 28px;
+            width: 100%;
+            max-width: 340px;
+            text-align: center;
+            border: 3px solid var(--dark);
+            box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
+            animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .custom-modal-text {
+            color: var(--dark);
+            font-size: 15px;
+            margin-bottom: 28px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .btn-modal-ok {
+            width: 100%;
+            background: var(--accent);
+            color: var(--white);
+            border: 2px solid var(--accent);
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-modal-ok:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(240, 90, 43, 0.3);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 380px) {
+            .wallet-card { padding: 24px; }
+            .stamps-grid { gap: 8px; }
+            .stamp-cup { width: 38px; height: 38px; }
+            .logo-small { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aurora-bg">
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+    </div>
+
+    <div id="modalAlertaCustom" class="custom-modal-overlay">
+        <div class="custom-modal-box">
+            <div id="textoAlertaCustom" class="custom-modal-text">Mensaje de error</div>
+            <button id="btnCerrarAlerta" class="btn-modal-ok">Entendido</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div id="cargando">Preparando tu experiencia<span class="loading-dots"></span></div>
+
+        <div id="pantallaRegistro">
+            <div class="registro-card">
+                <div class="logo-container">
+                    <div class="logo-animado">
+                        <span class="logo-text">beki</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="130" height="52" style="margin-top: -5px;">
+                          <text x="100" y="70" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="65" fill="var(--dark)" text-anchor="middle" letter-spacing="-2">CAFE</text>
+                        </svg>
+                    </div>
+                    <p class="welcome-text">ESPECIALIDAD</p>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Tu nombre</label>
+                    <input type="text" id="inputNombre" class="input-box" placeholder="Ej: Simon" required>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">WhatsApp</label>
+                    <input type="tel" id="inputCelular" class="input-box" placeholder="Ej: 2215551234" required>
+                </div>
+                
+                <button class="btn-primary" id="btnCrearTarjeta">Crear/Entrar a mi Tarjeta </button>
+                <button id="btnInstalarApp">Instalar app en tu celular</button>
+            </div>
+        </div>
+
+        <div id="pantallaTarjeta">
+            <p class="texto-girar">Toca la tarjeta para girarla</p>
+            
+            <div class="flip-container" onclick="this.classList.toggle('flipped')">
+                <div class="flipper">
+                    <div class="front">
+                        <div class="wallet-card">
+                            <div class="card-header">
+                                <div style="display: flex; flex-direction: column;">
+                                    <div class="logo-small">beki</div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="75" height="30" style="margin-top: 2px;">
+                                      <text x="0" y="65" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="65" fill="var(--dark)" text-anchor="start" letter-spacing="-2">CAFE</text>
+                                    </svg>
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-nickname" id="displayNombre">...</div>
+                                    <span class="user-tel-label" id="displayTelLabel">******0000</span>
+                                </div>
+                            </div>
+                            
+                            <div class="stamps-container">
+                                <div class="stamps-grid" id="gridSellos"></div>
+                                <p class="stamps-text">Completa 10 tazas y lleva tu bebida gratis</p>
+                            </div>
+                            
+                            <div class="info-row">
+                                <div>
+                                    <div class="info-label">Estado</div>
+                                    <div class="info-value" id="displayPremio">...</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div class="info-label">Progreso</div>
+                                    <div class="info-value info-value-points"><span id="displayPuntos">0</span>/10</div>
+                                </div>
+                            </div>
+                            
+                            <div class="qr-section">
+                                <div class="qr-box"><img id="qrImage" src="" alt="QR Cliente"></div>
+                                <div class="user-id">Tu codigo personal</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="back">
+                        <div class="back-logo-animado">
+                            <h2 class="back-logo-text">beki</h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="150" height="60" style="margin-top: -2px;">
+                              <text x="100" y="70" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="65" fill="var(--dark)" text-anchor="middle" letter-spacing="-2">CAFE</text>
+                            </svg>
+                        </div>
+                        <div class="back-subtitle">ESPECIALIDAD</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="btnCerrarSesion" class="btn-cerrar">Cerrar sesion en este dispositivo</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        class BekiApp {
+            constructor() {
+                const firebaseConfig = {
+                    apiKey: "AIzaSyCaqJraAXeZ8F4zCd9GUIdNIHhfU7FMzJk",
+                    authDomain: "club-cafe-app.firebaseapp.com",
+                    databaseURL: "https://club-cafe-app-default-rtdb.firebaseio.com",
+                    projectId: "club-cafe-app",
+                    storageBucket: "club-cafe-app.firebasestorage.app",
+                    messagingSenderId: "1007849307452",
+                    appId: "1:1007849307452:web:2472f6b2cab7deeae53239",
+                    measurementId: "G-6314S7TS0T"
+                };
+                
+                this.app = initializeApp(firebaseConfig);
+                this.db = getFirestore(this.app);
+                this.unsubscribe = null;
+
+                this.ui = {
+                    cargando: document.getElementById('cargando'),
+                    registro: document.getElementById('pantallaRegistro'),
+                    tarjeta: document.getElementById('pantallaTarjeta'),
+                    nombre: document.getElementById('displayNombre'),
+                    telLabel: document.getElementById('displayTelLabel'),
+                    qr: document.getElementById('qrImage'),
+                    gridSellos: document.getElementById('gridSellos'),
+                    puntos: document.getElementById('displayPuntos'),
+                    premio: document.getElementById('displayPremio'),
+                    modalAlerta: document.getElementById('modalAlertaCustom'),
+                    textoAlerta: document.getElementById('textoAlertaCustom')
+                };
+
+                this.vincularEventos();
+                this.iniciar();
+            }
+
+            vincularEventos() {
+                document.getElementById('btnCrearTarjeta').addEventListener('click', () => this.ingresar());
+                document.getElementById('btnCerrarSesion').addEventListener('click', () => this.cerrarSesion());
+                
+                document.getElementById('btnCerrarAlerta').addEventListener('click', () => {
+                    this.ui.modalAlerta.style.display = 'none';
+                });
+            }
+
+            mostrarAlerta(mensaje) {
+                this.ui.textoAlerta.innerText = mensaje;
+                this.ui.modalAlerta.style.display = 'flex';
+            }
+
+            iniciar() {
+                const celularLocal = localStorage.getItem('miTarjetaCafeTEL');
+                if (celularLocal) {
+                    this.abrirTarjeta(celularLocal);
+                } else {
+                    this.cambiarPantalla('registro');
+                }
+            }
+
+            cambiarPantalla(pantalla) {
+                this.ui.cargando.style.display = pantalla === 'cargando' ? 'block' : 'none';
+                this.ui.registro.style.display = pantalla === 'registro' ? 'block' : 'none';
+                this.ui.tarjeta.style.display = pantalla === 'tarjeta' ? 'block' : 'none';
+            }
+
+            formatearNombre(texto) {
+                if (!texto) return "";
+                return texto.trim().toLowerCase().replace(/\b\w/g, letra => letra.toUpperCase());
+            }
+
+            async ingresar() {
+                const nombreIngresado = document.getElementById('inputNombre').value;
+                const nombre = this.formatearNombre(nombreIngresado);
+                let celular = document.getElementById('inputCelular').value.trim();
+
+                if(!nombre || !celular) return this.mostrarAlerta("Por favor completa tu nombre y numero para continuar.");
+                
+                celular = celular.replace(/\D/g,''); 
+                if(celular.length < 8) return this.mostrarAlerta("El numero de WhatsApp es demasiado corto. Revisa que este bien escrito.");
+
+                this.cambiarPantalla('cargando');
+                this.ui.cargando.innerHTML = "Sincronizando tu tarjeta<span class='loading-dots'></span>";
+
+                try {
+                    const docRef = doc(this.db, "clientes", celular);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        await setDoc(docRef, { nombre: nombre }, { merge: true });
+                    } else {
+                        await setDoc(docRef, { 
+                            nombre: nombre, 
+                            puntos: 0,
+                            fechaRegistro: new Date().toISOString()
+                        });
+                    }
+                    
+                    localStorage.setItem('miTarjetaCafeTEL', celular);
+                    this.abrirTarjeta(celular);
+                } catch (e) {
+                    console.error("Error:", e);
+                    this.mostrarAlerta("Hubo un error de conexion. Revisa tu internet e intenta de nuevo.");
+                    this.cambiarPantalla('registro');
+                }
+            }
+
+            abrirTarjeta(celular) {
+                this.cambiarPantalla('tarjeta');
+                
+                this.ui.qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${celular}&bgcolor=FCD34D&color=4A0E17`;
+                this.ui.telLabel.innerText = `******${celular.slice(-4)}`;
+
+                this.unsubscribe = onSnapshot(doc(this.db, "clientes", celular), (docSnap) => {
+                    if (docSnap.exists()) {
+                        const datos = docSnap.data();
+                        this.ui.nombre.innerText = datos.nombre;
+                        this.renderizarTazas(datos.puntos);
+                    } else {
+                        this.cerrarSesion(); 
+                    }
+                });
+            }
+
+            renderizarTazas(puntosActuales) {
+                const totalTazas = 10;
+                this.ui.gridSellos.innerHTML = ''; 
+
+                for (let i = 1; i <= totalTazas; i++) {
+                    const contenedorSvg = document.createElement('div');
+                    contenedorSvg.innerHTML = this.obtenerSvgTaza();
+                    const svgElement = contenedorSvg.querySelector('svg'); 
+                    
+                    if (i <= puntosActuales) {
+                        svgElement.classList.add('filled');
+                    }
+                    this.ui.gridSellos.appendChild(svgElement);
+                }
+
+                this.ui.puntos.innerText = puntosActuales;
+                
+                if(puntosActuales >= totalTazas) {
+                    this.ui.premio.innerText = "Bebida lista!";
+                    this.ui.premio.classList.add('premio-listo');
+                } else {
+                    this.ui.premio.innerText = "En progreso";
+                    this.ui.premio.classList.remove('premio-listo');
+                }
+            }
+
+            obtenerSvgTaza() {
+                return `
+                <svg class="stamp-cup" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path class="steam-path" d="M38,30 V12 M50,32 V8 M62,30 V16" stroke-linecap="round"/>
+                    <path class="cup-path" d="M20,35 H80 V75 Q80,90 65,90 H35 Q20,90 20,75 Z" />
+                    <path class="coffee-fill" d="M22,37 H78 V73 Q78,88 63,88 H37 Q22,88 22,73 Z" />
+                    <path class="cup-handle" d="M80,45 Q95,45 95,60 T80,75" />
+                </svg>`;
+            }
+
+            cerrarSesion() {
+                if (this.unsubscribe) this.unsubscribe(); 
+                localStorage.removeItem('miTarjetaCafeTEL');
+                location.reload();
+            }
+        }
+
+        window.onload = () => {
+            new BekiApp();
+        };
+    </script>
+    
+    <script>
+        let eventoInstalacion = null;
+        const btnInstalar = document.getElementById('btnInstalarApp');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); 
+            eventoInstalacion = e;
+            btnInstalar.style.display = 'block'; 
+        });
+
+        btnInstalar.addEventListener('click', async () => {
+            if (!eventoInstalacion) return;
+            
+            eventoInstalacion.prompt(); 
+            
+            const { outcome } = await eventoInstalacion.userChoice;
+            if (outcome === 'accepted') {
+                btnInstalar.style.display = 'none'; 
+            }
+            eventoInstalacion = null;
+        });
+
+        window.addEventListener('appinstalled', () => {
+            btnInstalar.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

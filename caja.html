@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Caja - beki CAFE</title>
+
+    <link rel="manifest" href="manifest-barista.json">
+    <meta name="theme-color" content="#FCE17A">
+    <link rel="apple-touch-icon" href="icon.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        :root {
+            /* Paleta beki CAFE */
+            --bg-main: #FCE17A;  
+            --bg-card: #FCD34D;  
+            --accent: #F05A2B;   
+            --dark: #4A0E17;     
+            --dark-soft: rgba(74, 14, 23, 0.15); 
+            --white: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--dark);
+            font-family: 'Inter', sans-serif; 
+            text-align: center; 
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+        }
+
+        .main-container { 
+            width: 100%; max-width: 400px; padding: 24px; box-sizing: border-box; 
+            display: flex; flex-direction: column; align-items: center; 
+        }
+
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center; 
+            width: 100%; margin-bottom: 20px; padding: 0 5px;
+        }
+
+        .card-header h1 { 
+            font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; 
+            color: var(--accent); margin: 0; letter-spacing: -1px; 
+        }
+
+        .modern-card { 
+            background-color: var(--bg-card); border-radius: 24px; 
+            padding: 32px 24px; width: 100%; box-sizing: border-box; margin-bottom: 20px; 
+            border: 3px solid var(--dark); box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
+        }
+
+        /* --- LOGO ANIMADO (Igual que en la app de clientes) --- */
+        .logo-animado {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            margin: 0 auto 12px; animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif; font-weight: 900;
+            color: var(--accent); font-size: 48px; line-height: 1; letter-spacing: -1px;
+        }
+
+        /* --- LOGIN --- */
+        #pantallaLogin { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: var(--bg-main); z-index: 2000; display: flex; 
+            flex-direction: column; justify-content: center; align-items: center; 
+            padding: 40px; box-sizing: border-box; 
+        }
+        
+        .pin-input { 
+            padding: 20px; border-radius: 16px; border: 3px solid var(--dark); 
+            font-size: 32px; text-align: center; width: 100%; max-width: 200px; 
+            margin-bottom: 30px; letter-spacing: 10px; font-weight: 900; 
+            color: var(--dark); font-family: monospace; background-color: var(--white); 
+            transition: all 0.3s; box-shadow: 6px 6px 0px rgba(74, 14, 23, 0.15);
+        }
+        
+        .pin-input:focus { 
+            border-color: var(--accent); outline: none; 
+            box-shadow: 0 0 0 4px rgba(240, 90, 43, 0.15);
+        }
+        
+        @keyframes shake { 
+            0%, 100% { transform: translateX(0); } 
+            25% { transform: translateX(-10px); } 
+            75% { transform: translateX(10px); } 
+        }
+        .error-shake { animation: shake 0.4s; border-color: #E74C3C !important; color: #E74C3C;}
+
+        /* --- BÚSQUEDA --- */
+        #reader { 
+            width: 100%; max-width: 260px; margin: 0 auto 20px auto; 
+            border-radius: 16px; overflow: hidden; background-color: #000; 
+            border: 4px solid var(--dark); box-shadow: 6px 6px 0px rgba(74, 14, 23, 0.15);
+        }
+        
+        #reader button { 
+            background-color: var(--accent); color: var(--white); border: none; 
+            padding: 12px 20px; border-radius: 12px; font-family: 'Inter', sans-serif; 
+            font-weight: 700; cursor: pointer; margin: 20px; 
+        }
+        
+        .separador { 
+            margin: 24px 0 20px 0; color: var(--dark); opacity: 0.6; 
+            font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+        }
+        
+        .input-manual-group { display: flex; flex-direction: column; gap: 12px; width: 100%;}
+        
+        .input-manual-group input { 
+            width: 100%; padding: 18px; border-radius: 16px; border: 2px solid var(--dark-soft); 
+            font-size: 16px; background-color: rgba(255, 255, 255, 0.5); color: var(--dark); 
+            transition: all 0.2s; box-sizing: border-box; text-align: center; 
+            font-weight: 700; font-family: monospace; 
+        }
+        
+        .input-manual-group input:focus { 
+            border-color: var(--accent); background-color: var(--white); outline: none;
+            box-shadow: 0 0 0 4px rgba(240, 90, 43, 0.15);
+        }
+        
+        .btn-buscar-manual { 
+            width: 100%; background-color: var(--dark); color: var(--white); 
+            border: 2px solid var(--dark); padding: 16px; border-radius: 16px; 
+            font-weight: 700; cursor: pointer; transition: all 0.2s; 
+            font-size: 15px; font-family: 'Inter', sans-serif; 
+            box-shadow: 4px 4px 0px rgba(74, 14, 23, 0.2);
+        }
+        
+        .btn-buscar-manual:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px rgba(74, 14, 23, 0); }
+
+        /* --- ACCIONES (MODAL CENTRAL) --- */
+        #pantallaAcciones { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(252, 225, 122, 0.85); z-index: 1000; display: none; 
+            align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; 
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .acciones-content { 
+            width: 100%; max-width: 360px; background: var(--bg-card); border-radius: 24px; 
+            padding: 32px 24px; box-sizing: border-box; color: var(--dark); 
+            text-align: center; border: 3px solid var(--dark); 
+            box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        
+        @keyframes modalPop { 
+            from {opacity: 0; transform: scale(0.9);} 
+            to {opacity: 1; transform: scale(1);} 
+        }
+
+        .cliente-info-header { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 24px; }
+        .cliente-avatar { 
+            width: 64px; height: 64px; background-color: var(--bg-main); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; font-size: 28px; 
+            font-weight: 800; color: var(--accent); border: 3px solid var(--dark); 
+            box-shadow: 4px 4px 0px rgba(74, 14, 23, 0.15);
+        }
+        
+        .cliente-nombre { font-size: 20px; font-weight: 800; color: var(--dark); }
+        .cliente-tel { color: var(--dark); opacity: 0.6; font-size: 13px; font-family: monospace; font-weight: 600; margin-top: 4px; display: block;}
+        
+        .estado-sellos-container { 
+            background-color: rgba(255, 255, 255, 0.5); border-radius: 20px; padding: 24px; 
+            margin-bottom: 24px; display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; border: 2px dashed var(--dark-soft); 
+        }
+        
+        .estado-sellos-texto { font-size: 12px; color: var(--dark); opacity: 0.8; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;}
+        .estado-sellos-numero { color: var(--accent); font-weight: 900; font-size: 52px; line-height: 1; font-family: 'Montserrat', sans-serif;}
+        .estado-sellos-numero span { font-size: 20px; color: var(--dark); opacity: 0.5;}
+
+        /* --- BOTONES DE ACCIÓN --- */
+        .btn-stack { display: flex; flex-direction: column; gap: 12px; width: 100%;}
+        
+        .btn { 
+            width: 100%; padding: 18px; border-radius: 16px; border: 2px solid var(--dark); 
+            font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        .btn-brand { 
+            background: var(--accent); color: var(--white); border-color: var(--accent);
+            box-shadow: 0 4px 15px rgba(240, 90, 43, 0.25); 
+        }
+        .btn-brand:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(240, 90, 43, 0.35); }
+        
+        .btn-canje { 
+            background-color: var(--dark); color: var(--white); display: none; 
+            border-color: var(--dark); box-shadow: 0 4px 15px rgba(74, 14, 23, 0.3); 
+        }
+        .btn-canje:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(74, 14, 23, 0.4); }
+        
+        .btn-outlined { 
+            background-color: transparent; border: 2px dashed var(--dark-soft); 
+            color: var(--dark); padding: 14px; font-size: 14px;
+        }
+        .btn-outlined:hover { background-color: rgba(255, 255, 255, 0.3); }
+        
+        #mensajeLoader { 
+            margin-top: 20px; color: var(--dark); display: none; 
+            font-weight: 700; font-size: 14px; animation: titilar 1s infinite;
+        }
+
+        /* =========================================
+           MODALES PERSONALIZADOS (ALERTS)
+           ========================================= */
+        .custom-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(252, 225, 122, 0.85); backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); z-index: 3000; display: none; 
+            align-items: center; justify-content: center; padding: 24px; box-sizing: border-box;
+        }
+        .custom-modal-box {
+            background: var(--bg-card); border-radius: 24px; padding: 32px 24px;
+            width: 100%; max-width: 320px; text-align: center;
+            border: 3px solid var(--dark); box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
+            animation: modalPop 0.2s ease-out;
+        }
+        .custom-modal-text { color: var(--dark); font-size: 16px; margin-bottom: 25px; font-weight: 700; }
+        .modal-btn-row { display: flex; gap: 12px; }
+        
+        .btn-modal-ok { 
+            flex: 1; background: var(--accent); color: var(--white); border: none; 
+            padding: 16px; border-radius: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; 
+        }
+        .btn-modal-cancel { 
+            flex: 1; background: transparent; color: var(--dark); border: 2px solid var(--dark-soft); 
+            padding: 16px; border-radius: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="modalAlertaCustom" class="custom-modal-overlay">
+        <div class="custom-modal-box">
+            <div id="textoAlertaCustom" class="custom-modal-text">Mensaje de error</div>
+            <button id="btnCerrarAlerta" class="btn-modal-ok" style="width: 100%;">Entendido</button>
+        </div>
+    </div>
+
+    <div id="modalConfirmCustom" class="custom-modal-overlay">
+        <div class="custom-modal-box">
+            <div id="textoConfirmCustom" class="custom-modal-text">¿Confirmas la entrega?</div>
+            <div class="modal-btn-row">
+                <button id="btnCancelarConfirm" class="btn-modal-cancel">Cancelar</button>
+                <button id="btnAceptarConfirm" class="btn-modal-ok">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pantallaLogin">
+        <div class="logo-animado" style="margin-bottom: 40px;">
+            <span class="logo-text">beki</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="130" height="52" style="margin-top: -5px;">
+              <text x="100" y="70" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="65" fill="var(--dark)" text-anchor="middle" letter-spacing="-2">CAFE</text>
+            </svg>
+        </div>
+        <p style="color: var(--dark); margin-bottom: 20px; font-size: 14px; font-weight: 700; letter-spacing: 2px;">CAJA OPERATIVA</p>
+        <input type="password" id="inputPin" class="pin-input" placeholder="****" maxlength="4" inputmode="numeric">
+        <button id="btnDesbloquear" class="btn btn-brand" style="max-width: 200px;">Desbloquear Caja</button>
+    </div>
+
+    <div class="main-container">
+        <div class="card-header">
+            <h1>beki.</h1>
+            <div style="font-size: 11px; color: var(--dark); opacity: 0.6; font-family: monospace; font-weight: 800;">SCANNER v2.0</div>
+        </div>
+
+        <div id="mensajeLoader">Sincronizando base de datos...</div>
+
+        <div id="pantallaBusqueda" class="modern-card">
+            <p style="color: var(--dark); opacity: 0.8; font-size: 14px; font-weight: 600; margin-top: 0; margin-bottom: 24px;">Apunta al código QR del cliente</p>
+            
+            <div id="reader"></div>
+            
+            <div id="errorCamara" style="display: none; color: #E74C3C; font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+                No se pudo activar la cámara. Usa la búsqueda manual.
+            </div>
+            
+            <div class="separador">o ingresa celular</div>
+            
+            <div class="input-manual-group">
+                <input type="tel" id="inputTelBusqueda" placeholder="Ej: 2215551234">
+                <button id="btnBuscarManual" class="btn-buscar-manual">Buscar Ficha</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pantallaAcciones">
+        <div class="acciones-content">
+            <div class="cliente-info-header">
+                <div class="cliente-avatar" id="uiAvatar">A</div>
+                <div class="cliente-textos">
+                    <div class="cliente-nombre" id="uiNombre">Nombre...</div>
+                    <span class="cliente-tel" id="uiTel">Teléfono...</span>
+                </div>
+            </div>
+
+            <div class="estado-sellos-container">
+                <div class="estado-sellos-texto">TAZAS ACUMULADAS:</div>
+                <div class="estado-sellos-numero"><span id="uiSellos" style="font-size: 52px; color: var(--accent); opacity: 1;">0</span> <span>/10</span></div>
+            </div>
+
+            <div class="btn-stack">
+                <button id="btnSumar" class="btn btn-brand">+ Sumar 1 Sello</button>
+                <button id="btnCanjear" class="btn btn-canje">☕ Entregar Bebida Gratis</button>
+                
+                <div style="display: flex; gap: 10px; width: 100%; margin-top: 10px;">
+                    <button id="btnRestar" class="btn btn-outlined" style="flex: 1;">Corregir (-1)</button>
+                    <button id="btnVolver" class="btn btn-outlined" style="flex: 1; border-color: #E74C3C; color: #E74C3C; background: rgba(231, 76, 60, 0.1);">Cerrar Ficha</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        class BekiCajaApp {
+            constructor() {
+                // TUS MISMAS CREDENCIALES DE FIREBASE INTACTAS
+                const firebaseConfig = {
+                    apiKey: "AIzaSyCaqJraAXeZ8F4zCd9GUIdNIHhfU7FMzJk",
+                    authDomain: "club-cafe-app.firebaseapp.com",
+                    databaseURL: "https://club-cafe-app-default-rtdb.firebaseio.com",
+                    projectId: "club-cafe-app",
+                    storageBucket: "club-cafe-app.firebasestorage.app",
+                    messagingSenderId: "1007849307452",
+                    appId: "1:1007849307452:web:2472f6b2cab7deeae53239",
+                    measurementId: "G-6314S7TS0T"
+                };
+
+                this.app = initializeApp(firebaseConfig);
+                this.db = getFirestore(this.app);
+
+                this.html5QrCode = null;
+                this.clienteActualId = null;
+                this.puntosActuales = 0;
+                this.pinCorrecto = "2026"; 
+
+                this.ui = {
+                    login: document.getElementById('pantallaLogin'),
+                    busqueda: document.getElementById('pantallaBusqueda'),
+                    acciones: document.getElementById('pantallaAcciones'),
+                    loader: document.getElementById('mensajeLoader'),
+                    pinInput: document.getElementById('inputPin'),
+                    errorCamara: document.getElementById('errorCamara'),
+                    modalAlerta: document.getElementById('modalAlertaCustom'),
+                    textoAlerta: document.getElementById('textoAlertaCustom'),
+                    modalConfirm: document.getElementById('modalConfirmCustom'),
+                    textoConfirm: document.getElementById('textoConfirmCustom')
+                };
+
+                this.audioBeep = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU'); 
+
+                this.iniciarEventos();
+                this.verificarSeguridad();
+            }
+
+            mostrarAlerta(mensaje) {
+                this.ui.textoAlerta.innerText = mensaje;
+                this.ui.modalAlerta.style.display = 'flex';
+            }
+
+            mostrarConfirmacion(mensaje, callbackAceptar) {
+                this.ui.textoConfirm.innerText = mensaje;
+                this.ui.modalConfirm.style.display = 'flex';
+                
+                document.getElementById('btnAceptarConfirm').onclick = () => {
+                    this.ui.modalConfirm.style.display = 'none';
+                    callbackAceptar();
+                };
+                
+                document.getElementById('btnCancelarConfirm').onclick = () => {
+                    this.ui.modalConfirm.style.display = 'none';
+                };
+            }
+
+            iniciarEventos() {
+                document.getElementById('btnCerrarAlerta').addEventListener('click', () => {
+                    this.ui.modalAlerta.style.display = 'none';
+                });
+
+                document.getElementById('btnDesbloquear').addEventListener('click', () => this.verificarPin());
+                this.ui.pinInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') this.verificarPin(); });
+                
+                document.getElementById('btnBuscarManual').addEventListener('click', () => {
+                    let tel = document.getElementById('inputTelBusqueda').value.replace(/\D/g,'');
+                    if(tel.length < 8) return this.mostrarAlerta("Número inválido. Ingrese al menos 8 dígitos.");
+                    this.pausarCamara();
+                    this.buscarClienteEnFirebase(tel);
+                });
+
+                document.getElementById('btnSumar').addEventListener('click', () => this.modificarSellos(1));
+                document.getElementById('btnRestar').addEventListener('click', () => this.modificarSellos(-1));
+                document.getElementById('btnCanjear').addEventListener('click', () => this.canjearPremio());
+                document.getElementById('btnVolver').addEventListener('click', () => this.volverABuscar());
+            }
+
+            reproducirBeep() { try { this.audioBeep.play().catch(e=>{}); } catch(e){} }
+            vibrar(patron) { if ("vibrate" in navigator) { navigator.vibrate(patron); } }
+
+            verificarSeguridad() {
+                if (localStorage.getItem('baristaAutorizado') === 'true') {
+                    this.ui.login.style.display = 'none';
+                    this.iniciarCamara();
+                }
+            }
+
+            verificarPin() {
+                const pinIngresado = this.ui.pinInput.value;
+                if (pinIngresado === this.pinCorrecto) {
+                    localStorage.setItem('baristaAutorizado', 'true');
+                    this.ui.login.style.display = 'none';
+                    this.iniciarCamara();
+                } else {
+                    this.ui.pinInput.classList.add('error-shake');
+                    this.vibrar([100, 50, 100]); 
+                    setTimeout(() => {
+                        this.ui.pinInput.classList.remove('error-shake');
+                        this.ui.pinInput.value = '';
+                    }, 400);
+                }
+            }
+
+            iniciarCamara() {
+                this.ui.errorCamara.style.display = 'none';
+                if (!this.html5QrCode) { this.html5QrCode = new Html5Qrcode("reader"); }
+                
+                this.html5QrCode.start(
+                    { facingMode: "environment" }, 
+                    { fps: 10, qrbox: { width: 180, height: 180 } },
+                    (decodedText) => this.onScanSuccess(decodedText),
+                    () => { }
+                ).catch((err) => {
+                    console.error("Fallo cámara: ", err);
+                    this.ui.errorCamara.style.display = 'block'; 
+                });
+            }
+
+            pausarCamara() {
+                if (this.html5QrCode && this.html5QrCode.isScanning) {
+                    this.html5QrCode.stop().catch(err => console.log(err));
+                }
+            }
+
+            onScanSuccess(decodedText) {
+                this.reproducirBeep();
+                this.vibrar(100);
+                this.pausarCamara();
+                this.buscarClienteEnFirebase(decodedText);
+            }
+
+            async buscarClienteEnFirebase(telefono) {
+                this.ui.busqueda.style.display = 'none';
+                this.ui.loader.style.display = 'block';
+
+                try {
+                    const docRef = doc(this.db, "clientes", telefono);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        const datos = docSnap.data();
+                        this.clienteActualId = telefono;
+                        this.puntosActuales = datos.puntos;
+                        
+                        document.getElementById('uiNombre').innerText = datos.nombre;
+                        document.getElementById('uiTel').innerText = telefono;
+                        document.getElementById('uiSellos').innerText = this.puntosActuales;
+                        document.getElementById('uiAvatar').innerText = datos.nombre.charAt(0).toUpperCase();
+
+                        this.actualizarBotonesAccion();
+
+                        this.ui.loader.style.display = 'none';
+                        this.ui.acciones.style.display = 'flex'; 
+                    } else {
+                        this.mostrarAlerta("Cliente no encontrado en la base de datos.");
+                        this.volverABuscar();
+                    }
+                } catch (error) {
+                    this.mostrarAlerta("Error de conexión con el servidor.");
+                    this.volverABuscar();
+                }
+            }
+
+            actualizarBotonesAccion() {
+                if(this.puntosActuales >= 10) {
+                    document.getElementById('btnSumar').style.display = 'none';
+                    document.getElementById('btnCanjear').style.display = 'block';
+                } else {
+                    document.getElementById('btnSumar').style.display = 'block';
+                    document.getElementById('btnCanjear').style.display = 'none';
+                }
+            }
+
+            async modificarSellos(cantidad) {
+                if(cantidad === -1 && this.puntosActuales <= 0) return;
+                if(cantidad === 1 && this.puntosActuales >= 10) return;
+
+                const btn = document.getElementById('btnSumar');
+                const btnOriginal = btn.innerText;
+                btn.innerText = "...";
+                btn.disabled = true;
+
+                try {
+                    const docRef = doc(this.db, "clientes", this.clienteActualId);
+                    
+                    // Acá, en el futuro, podrías sumar la actualización de 'fechaUltimaVisita'
+                    // para el sistema de emails que hablamos. Ej:
+                    // const fechaAutomatica = new Date().toISOString();
+                    // await updateDoc(docRef, { puntos: increment(cantidad), fechaUltimaVisita: fechaAutomatica });
+                    
+                    await updateDoc(docRef, { puntos: increment(cantidad) });
+                    
+                    this.puntosActuales += cantidad;
+                    document.getElementById('uiSellos').innerText = this.puntosActuales;
+                    this.vibrar(50); 
+                    
+                    this.actualizarBotonesAccion();
+
+                } catch(e) {
+                    this.mostrarAlerta("Ocurrió un error al guardar el sello.");
+                } finally {
+                    btn.disabled = false;
+                    btn.innerText = btnOriginal;
+                }
+            }
+
+            canjearPremio() {
+                this.mostrarConfirmacion("¿Confirmas la entrega de la bebida gratis?", async () => {
+                    try {
+                        const docRef = doc(this.db, "clientes", this.clienteActualId);
+                        const fechaAutomatica = new Date().toISOString(); 
+                        
+                        await updateDoc(docRef, { 
+                            puntos: 0,
+                            ultimoPremio: fechaAutomatica, 
+                            totalPremiosCanjeados: increment(1) 
+                        }); 
+                        
+                        this.vibrar([100, 50, 100, 50, 200]); 
+                        this.mostrarAlerta("¡Premio registrado correctamente!");
+                        this.volverABuscar(); 
+                    } catch(e) {
+                        this.mostrarAlerta("Error al reiniciar la tarjeta.");
+                    }
+                });
+            }
+
+            volverABuscar() {
+                this.ui.acciones.style.display = 'none';
+                this.ui.loader.style.display = 'none';
+                this.ui.busqueda.style.display = 'block';
+                document.getElementById('inputTelBusqueda').value = "";
+                this.clienteActualId = null;
+                this.iniciarCamara();
+            }
+        }
+
+        window.onload = () => {
+            window.miCaja = new BekiCajaApp(); 
+        };
+    </script>
+</body>
+</html>

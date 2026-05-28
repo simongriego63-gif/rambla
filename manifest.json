@@ -1,0 +1,25 @@
+{
+  "id": "beki-app-cliente",
+  "name": "beki - CAFE ESPECIALIDAD",
+  "short_name": "beki",
+  "description": "Tu tarjeta digital de beneficios para beki CAFE ESPECIALIDAD.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FCE17A",
+  "theme_color": "#FCE17A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
