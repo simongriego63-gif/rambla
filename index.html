@@ -12,7 +12,6 @@
     
     <style>
         :root {
-            /* Paleta beki CAFE - El "Punto Caramelo" (Chill pero vivo) */
             --bg-main: #FCE17A;  
             --bg-card: #FCD34D;  
             --accent: #F05A2B;   
@@ -20,7 +19,6 @@
             --dark-soft: rgba(74, 14, 23, 0.15); 
             --white: #FFFFFF;
             
-            /* Colores aurora adaptados */
             --aurora-1: rgba(240, 90, 43, 0.15);
             --aurora-2: rgba(74, 14, 23, 0.1);
             --aurora-3: rgba(255, 255, 255, 0.3);
@@ -66,33 +64,9 @@
             animation: floatAurora 20s ease-in-out infinite;
         }
 
-        .aurora-blob:nth-child(1) {
-            width: 400px;
-            height: 400px;
-            background: var(--aurora-1);
-            top: -100px;
-            left: -100px;
-            animation-delay: 0s;
-        }
-
-        .aurora-blob:nth-child(2) {
-            width: 350px;
-            height: 350px;
-            background: var(--aurora-2);
-            bottom: -50px;
-            right: -80px;
-            animation-delay: -5s;
-        }
-
-        .aurora-blob:nth-child(3) {
-            width: 300px;
-            height: 300px;
-            background: var(--aurora-3);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -10s;
-        }
+        .aurora-blob:nth-child(1) { width: 400px; height: 400px; background: var(--aurora-1); top: -100px; left: -100px; animation-delay: 0s; }
+        .aurora-blob:nth-child(2) { width: 350px; height: 350px; background: var(--aurora-2); bottom: -50px; right: -80px; animation-delay: -5s; }
+        .aurora-blob:nth-child(3) { width: 300px; height: 300px; background: var(--aurora-3); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -10s; }
 
         @keyframes floatAurora {
             0%, 100% { transform: translate(0, 0) scale(1); }
@@ -109,191 +83,7 @@
             max-width: 400px;
         }
 
-        /* === PANTALLA REGISTRO === */
-        #pantallaRegistro {
-            display: none;
-            text-align: center;
-        }
-
-        .registro-card {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 48px 32px;
-            border: 3px solid var(--dark);
-            box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
-        }
-
-        .logo-container {
-            margin-bottom: 30px;
-        }
-
-        .logo-animado {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 12px;
-            animation: pulseGlow 4s ease-in-out infinite;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .logo-text {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            color: var(--accent);
-            font-size: 48px;
-            line-height: 1;
-            letter-spacing: -1px;
-        }
-
-        .welcome-text {
-            font-size: 15px;
-            color: var(--dark);
-            opacity: 0.8;
-            font-weight: 700;
-            letter-spacing: 4px;
-            margin-top: 8px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .input-label {
-            font-size: 13px;
-            color: var(--dark);
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: block;
-            opacity: 0.9;
-        }
-
-        .input-box {
-            width: 100%;
-            padding: 18px 20px;
-            border-radius: 16px;
-            border: 2px solid var(--dark-soft);
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.5);
-            color: var(--dark);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-        }
-
-        .input-box::placeholder {
-            color: var(--dark);
-            opacity: 0.4;
-        }
-
-        .input-box:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(240, 90, 43, 0.15);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 20px 32px;
-            border-radius: 16px;
-            border: 2px solid var(--accent);
-            background: var(--accent);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            margin-top: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(240, 90, 43, 0.25);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(240, 90, 43, 0.35);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-            box-shadow: 0 2px 10px rgba(240, 90, 43, 0.25);
-        }
-
-        #btnInstalarApp {
-            display: none; 
-            width: 100%;
-            margin-top: 16px;
-            padding: 16px;
-            border-radius: 16px;
-            border: 2px dashed var(--accent);
-            background: rgba(255, 255, 255, 0.4);
-            color: var(--dark);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        #btnInstalarApp:hover {
-            background: rgba(240, 90, 43, 0.1);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        /* === PANTALLA TARJETA === */
-        #pantallaTarjeta {
-            display: none;
-        }
-
-        .texto-girar {
-            text-align: center;
-            font-size: 13px;
-            color: var(--dark);
-            opacity: 0.7;
-            margin-bottom: 20px;
-            font-weight: 600;
-            animation: breathe 3s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 0.9; }
-        }
-
-        /* === FLIP CARD === */
-        .flip-container {
-            perspective: 1500px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .flip-container.flipped .flipper {
-            transform: rotateY(180deg);
-        }
-
-        .flipper {
-            display: grid;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
-        }
-
-        .front, .back {
-            grid-area: 1 / 1;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            border-radius: 24px;
-        }
-
-        .front { transform: rotateY(0deg); }
-        .back { transform: rotateY(180deg); }
-
-        /* === TARJETA PRINCIPAL === */
+        /* === TARJETA BASE ESTILOS === */
         .wallet-card {
             background: var(--bg-card);
             border-radius: 24px;
@@ -302,417 +92,184 @@
             box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 28px;
+        /* === SKELETON LOADING (MEJORA 3) === */
+        #pantallaSkeleton {
+            display: none;
+            width: 100%;
         }
 
-        .logo-small {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 32px;
-            line-height: 0.9;
-            color: var(--accent);
-            letter-spacing: -1px;
+        .skeleton-block, .skeleton-circle {
+            background: linear-gradient(90deg, rgba(74, 14, 23, 0.05) 25%, rgba(74, 14, 23, 0.12) 50%, rgba(74, 14, 23, 0.05) 75%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.5s infinite linear;
         }
 
-        .user-info {
-            text-align: right;
+        .skeleton-block { border-radius: 12px; }
+        .skeleton-circle { width: 44px; height: 44px; border-radius: 50%; }
+
+        @keyframes skeletonShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
-        .user-nickname {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--accent);
+        .card-header-skeleton { display: flex; justify-content: space-between; margin-bottom: 28px; }
+        .stamps-skeleton { background: rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 24px 20px; margin-bottom: 16px; border: 2px dashed rgba(74, 14, 23, 0.1); }
+        
+        /* === PANTALLA REGISTRO === */
+        #pantallaRegistro { display: none; text-align: center; }
+        .registro-card { background: var(--bg-card); border-radius: 24px; padding: 48px 32px; border: 3px solid var(--dark); box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15); }
+        .logo-container { margin-bottom: 30px; }
+        .logo-animado { display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 auto 12px; animation: pulseGlow 4s ease-in-out infinite; }
+        
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        .user-tel-label {
-            font-size: 12px;
-            color: var(--dark);
-            opacity: 0.7;
-            font-weight: 600;
-            display: block;
-            margin-top: 4px;
-        }
+        .logo-text { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--accent); font-size: 48px; line-height: 1; letter-spacing: -1px; }
+        .welcome-text { font-size: 15px; color: var(--dark); opacity: 0.8; font-weight: 700; letter-spacing: 4px; margin-top: 8px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-label { font-size: 13px; color: var(--dark); font-weight: 700; margin-bottom: 10px; display: block; opacity: 0.9; }
+        .input-box { width: 100%; padding: 18px 20px; border-radius: 16px; border: 2px solid var(--dark-soft); font-size: 16px; font-family: 'Inter', sans-serif; font-weight: 600; background: rgba(255, 255, 255, 0.5); color: var(--dark); transition: all 0.3s ease; outline: none; }
+        .input-box::placeholder { color: var(--dark); opacity: 0.4; }
+        .input-box:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(240, 90, 43, 0.15); }
+        
+        .btn-primary { width: 100%; padding: 20px 32px; border-radius: 16px; border: 2px solid var(--accent); background: var(--accent); color: var(--white); font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(240, 90, 43, 0.25); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(240, 90, 43, 0.35); }
+        .btn-primary:active { transform: scale(0.98); box-shadow: 0 2px 10px rgba(240, 90, 43, 0.25); }
+
+        #btnInstalarApp { display: none; width: 100%; margin-top: 16px; padding: 16px; border-radius: 16px; border: 2px dashed var(--accent); background: rgba(255, 255, 255, 0.4); color: var(--dark); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        #btnInstalarApp:hover { background: rgba(240, 90, 43, 0.1); border-color: var(--accent); color: var(--accent); }
+
+        /* === PANTALLA TARJETA === */
+        #pantallaTarjeta { display: none; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .texto-girar { text-align: center; font-size: 13px; color: var(--dark); opacity: 0.7; margin-bottom: 20px; font-weight: 600; animation: breathe 3s ease-in-out infinite; }
+        @keyframes breathe { 0%, 100% { opacity: 0.6; } 50% { opacity: 0.9; } }
+
+        .flip-container { perspective: 1500px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .flip-container.flipped .flipper { transform: rotateY(180deg); }
+        .flipper { display: grid; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+        .front, .back { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 24px; }
+        .front { transform: rotateY(0deg); }
+        .back { transform: rotateY(180deg); }
+
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+        .logo-small { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 32px; line-height: 0.9; color: var(--accent); letter-spacing: -1px; }
+        .user-info { text-align: right; }
+        .user-nickname { font-size: 16px; font-weight: 800; color: var(--accent); }
+        .user-tel-label { font-size: 12px; color: var(--dark); opacity: 0.7; font-weight: 600; display: block; margin-top: 4px; }
 
         /* === STAMPS/SELLOS === */
-        .stamps-container {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 24px;
-            border: 2px dashed var(--dark-soft);
-        }
+        .stamps-container { background: rgba(255, 255, 255, 0.4); border-radius: 20px; padding: 24px 20px; margin-bottom: 16px; border: 2px dashed var(--dark-soft); }
+        .stamps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; justify-items: center; }
 
-        /* Grilla de 4x2 */
-        .stamps-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
-            justify-items: center;
+        /* === TAZAS CON EFECTO LÍQUIDO REALISTA (MEJORA 4) === */
+        .stamp-cup { width: 44px; height: 44px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .stamp-cup .cup-path { fill: none; stroke: var(--dark-soft); stroke-width: 2; transition: all 0.4s ease; }
+        .stamp-cup .cup-handle { fill: none; stroke: var(--dark-soft); stroke-width: 4; stroke-linecap: round; transition: all 0.4s ease; }
+        .stamp-cup .steam-path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; opacity: 0; }
+        
+        .liquid-rise {
+            transform: translateY(60px); /* Oculto abajo */
+            transition: transform 0s;
         }
-
-        /* === TAZAS ANIMADAS === */
-        .stamp-cup {
-            width: 44px;
-            height: 44px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .stamp-cup .cup-path {
-            fill: none;
-            stroke: var(--dark-soft);
-            stroke-width: 2;
-            transition: all 0.4s ease;
-        }
-
-        .stamp-cup .cup-handle {
-            fill: none;
-            stroke: var(--dark-soft);
-            stroke-width: 4; 
-            stroke-linecap: round;
-            transition: all 0.4s ease;
-        }
-
-        .stamp-cup .coffee-fill {
-            fill: none;
-            opacity: 0;
-            transition: all 0.4s ease;
-        }
-
-        .stamp-cup .steam-path {
-            fill: none;
-            stroke: var(--accent);
-            stroke-width: 2;
-            stroke-linecap: round;
-            opacity: 0;
+        
+        .liquid-wave-path {
+            fill: var(--accent);
         }
 
         .stamp-cup.filled {
             transform: scale(1.1);
             filter: drop-shadow(0 4px 0px rgba(74, 14, 23, 0.15));
         }
-
-        .stamp-cup.filled .cup-path {
-            fill: var(--dark);
-            stroke: var(--dark);
+        .stamp-cup.filled .cup-path { fill: var(--dark); stroke: var(--dark); }
+        .stamp-cup.filled .cup-handle { stroke: var(--dark); }
+        
+        .stamp-cup.filled .liquid-rise {
+            transform: translateY(0);
+            transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .stamp-cup.filled .cup-handle {
-            stroke: var(--dark);
+        .stamp-cup.filled .liquid-wave-path {
+            animation: waveMotion 1.5s linear infinite;
         }
 
-        .stamp-cup.filled .coffee-fill {
-            fill: var(--accent);
-            opacity: 1;
-            animation: fillUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
+        .stamp-cup.filled .steam-path { opacity: 0.8; animation: steam 2.5s ease-in-out infinite; animation-delay: 1s; }
 
-        .stamp-cup.filled .steam-path {
-            opacity: 0.8;
-            animation: steam 2.5s ease-in-out infinite;
+        @keyframes waveMotion {
+            0% { transform: translateX(-50px); }
+            100% { transform: translateX(0px); }
         }
-
-        @keyframes fillUp {
-            0% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
-            100% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
-        }
-
         @keyframes steam {
             0% { transform: translateY(0); opacity: 0; }
             20% { opacity: 0.8; }
             100% { transform: translateY(-15px); opacity: 0; }
         }
 
-        /* === NUEVO: SELLO DE DESCUENTO === */
-        .stamp-discount {
-            width: 44px;
-            height: 44px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        /* === SELLO DE DESCUENTO % === */
+        .stamp-discount { width: 44px; height: 44px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .stamp-discount .discount-border { fill: none; stroke: var(--dark-soft); stroke-width: 4; stroke-dasharray: 6 3; stroke-linecap: round; transition: all 0.4s ease; }
+        .stamp-discount .discount-text { fill: var(--dark-soft); font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 42px; transition: all 0.4s ease; }
+        
+        .stamp-discount.filled { transform: scale(1.1) rotate(-10deg); filter: drop-shadow(0 4px 0px rgba(74, 14, 23, 0.15)); }
+        .stamp-discount.filled .discount-border { fill: var(--accent); stroke: var(--dark); stroke-dasharray: none; }
+        .stamp-discount.filled .discount-text { fill: var(--dark); }
 
-        .stamp-discount .discount-border {
-            fill: none;
-            stroke: var(--dark-soft);
-            stroke-width: 4;
-            stroke-dasharray: 8 4; /* Efecto de ticket punteado */
-            stroke-linecap: round;
-            transition: all 0.4s ease;
-        }
+        .stamp-cup.used, .stamp-discount.used { opacity: 0.25 !important; filter: grayscale(100%) contrast(70%) !important; transform: scale(0.95) !important; box-shadow: none !important; }
 
-        .stamp-discount .discount-text {
-            fill: var(--dark-soft);
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 40px;
-            transition: all 0.4s ease;
-        }
+        .stamps-text { text-align: center; font-size: 11px; color: var(--dark); opacity: 0.8; margin: 0; font-weight: 600; }
 
-        /* Estado completado para el descuento */
-        .stamp-discount.filled {
-            transform: scale(1.1) rotate(-10deg); /* Pequeño giro festivo */
-            filter: drop-shadow(0 4px 0px rgba(74, 14, 23, 0.15));
-        }
-
-        .stamp-discount.filled .discount-border {
-            fill: var(--accent);
-            stroke: var(--dark);
-            stroke-dasharray: none; /* Se vuelve una línea sólida al activarse */
-        }
-
-        .stamp-discount.filled .discount-text {
-            fill: var(--dark);
-            animation: celebratePulse 0.5s ease-in-out forwards;
-        }
-
-        /* Retrasos de animación */
-        .stamp-cup.filled:nth-child(1) { animation-delay: 0ms; }
-        .stamp-cup.filled:nth-child(2) { animation-delay: 50ms; }
-        .stamp-discount.filled:nth-child(3) { animation-delay: 100ms; }
-        .stamp-cup.filled:nth-child(4) { animation-delay: 150ms; }
-        .stamp-discount.filled:nth-child(5) { animation-delay: 200ms; }
-        .stamp-cup.filled:nth-child(6) { animation-delay: 250ms; }
-        .stamp-cup.filled:nth-child(7) { animation-delay: 300ms; }
-        .stamp-cup.filled:nth-child(8) { animation-delay: 350ms; }
-
-        .stamps-text {
-            text-align: center;
-            font-size: 12px;
-            color: var(--dark);
-            opacity: 0.8;
-            margin: 0;
-            font-weight: 600;
-        }
+        /* === APARTADO DE REFERENCIAS === */
+        .references-box { background: rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 12px 14px; margin-bottom: 24px; border: 1px solid rgba(74, 14, 23, 0.1); display: flex; flex-direction: column; gap: 8px; }
+        .ref-item { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; color: var(--dark); }
+        .ref-icon-badge { width: 20px; height: 20px; background: var(--bg-card); border: 1.5px solid var(--dark); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: 'Montserrat', sans-serif; color: var(--accent); }
+        .ref-text-status { margin-left: auto; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.6; }
 
         /* === INFO ROW === */
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 28px;
-            padding: 0 4px;
-        }
-
-        .info-label {
-            font-size: 11px;
-            color: var(--dark);
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-            font-weight: 700;
-        }
-
-        .info-value {
-            font-weight: 800;
-            font-size: 15px;
-            color: var(--dark);
-        }
-
-        .info-value-points {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--accent);
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .premio-listo {
-            color: var(--accent) !important;
-            animation: celebratePulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes celebratePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 28px; padding: 0 4px; }
+        .info-label { font-size: 11px; color: var(--dark); opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 700; }
+        .info-value { font-weight: 800; font-size: 15px; color: var(--dark); }
+        .info-value-points { font-size: 28px; font-weight: 900; color: var(--accent); font-family: 'Montserrat', sans-serif; }
+        .premio-listo { color: var(--accent) !important; animation: celebratePulse 1.5s ease-in-out infinite; }
 
         /* === QR SECTION === */
-        .qr-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .qr-box {
-            background: var(--bg-card);
-            padding: 14px;
-            border-radius: 18px;
-            border: 2px solid var(--dark);
-        }
-
-        .qr-box img {
-            display: block;
-            width: 110px;
-            height: 110px;
-        }
-
-        .user-id {
-            font-size: 11px;
-            color: var(--dark);
-            opacity: 0.6;
-            letter-spacing: 2px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+        .qr-section { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .qr-box { background: var(--bg-card); padding: 14px; border-radius: 18px; border: 2px solid var(--dark); }
+        .qr-box img { display: block; width: 110px; height: 110px; }
+        .user-id { font-size: 11px; color: var(--dark); opacity: 0.6; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; }
 
         /* === DORSO TARJETA === */
-        .back {
-            background: var(--bg-card);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 60px;
-            border: 3px solid var(--dark);
-            box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
-            min-height: 500px;
-        }
+        .back { background: var(--bg-card); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px; border: 3px solid var(--dark); box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15); min-height: 500px; }
+        .back-logo-animado { display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 24px; animation: floatCard 6s ease-in-out infinite; }
+        .back-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--accent); font-size: 56px; letter-spacing: -2px; margin: 0; line-height: 1; }
+        .back-subtitle { font-size: 16px; color: var(--dark); font-weight: 800; letter-spacing: 6px; text-transform: uppercase; margin-top: 12px; }
 
-        .back-logo-animado {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 24px;
-            animation: floatCard 6s ease-in-out infinite;
-        }
-
-        @keyframes floatCard {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .back-logo-text {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            color: var(--accent);
-            font-size: 56px;
-            letter-spacing: -2px;
-            margin: 0;
-            line-height: 1;
-        }
-
-        .back-subtitle {
-            font-size: 16px;
-            color: var(--dark);
-            font-weight: 800;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            margin-top: 12px;
-        }
-
-        /* === BOTON CERRAR SESION === */
-        .btn-cerrar {
-            margin-top: 32px;
-            background: none;
-            color: var(--dark);
-            opacity: 0.6;
-            border: none;
-            width: 100%;
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            padding: 16px;
-            border-radius: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-cerrar:hover {
-            opacity: 1;
-            background: var(--dark-soft);
-        }
-
-        /* === ESTADOS === */
-        #cargando {
-            font-size: 15px;
-            text-align: center;
-            color: var(--dark);
-            opacity: 0.8;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-
-        .loading-dots::after {
-            content: '';
-            animation: loadingDots 1.5s infinite;
-        }
-
-        @keyframes loadingDots {
-            0% { content: ''; }
-            25% { content: '.'; }
-            50% { content: '..'; }
-            75% { content: '...'; }
-        }
-
-        /* === MODAL === */
-        .custom-modal-overlay {
+        /* === SISTEMA DE PARTÍCULAS (MEJORA 2) === */
+        .particle {
             position: fixed;
-            inset: 0;
-            background: rgba(252, 225, 122, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 3000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
         }
 
-        .custom-modal-box {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 36px 28px;
-            width: 100%;
-            max-width: 340px;
-            text-align: center;
-            border: 3px solid var(--dark);
-            box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
-            animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .btn-cerrar { margin-top: 32px; background: none; color: var(--dark); opacity: 0.6; border: none; width: 100%; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; padding: 16px; border-radius: 14px; transition: all 0.3s ease; }
+        .btn-cerrar:hover { opacity: 1; background: var(--dark-soft); }
 
-        @keyframes modalIn {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .custom-modal-text {
-            color: var(--dark);
-            font-size: 15px;
-            margin-bottom: 28px;
-            font-weight: 600;
-            line-height: 1.6;
-        }
-
-        .btn-modal-ok {
-            width: 100%;
-            background: var(--accent);
-            color: var(--white);
-            border: 2px solid var(--accent);
-            padding: 16px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-family: 'Inter', sans-serif;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-modal-ok:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(240, 90, 43, 0.3);
-        }
-
-        /* === RESPONSIVE === */
+        .custom-modal-overlay { position: fixed; inset: 0; background: rgba(252, 225, 122, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 24px; }
+        .custom-modal-box { background: var(--bg-card); border-radius: 24px; padding: 36px 28px; width: 100%; max-width: 340px; text-align: center; border: 3px solid var(--dark); box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15); animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .custom-modal-text { color: var(--dark); font-size: 15px; margin-bottom: 28px; font-weight: 600; line-height: 1.6; }
+        .btn-modal-ok { width: 100%; background: var(--accent); color: var(--white); border: 2px solid var(--accent); padding: 16px; border-radius: 14px; font-weight: 700; font-family: 'Inter', sans-serif; font-size: 15px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-modal-ok:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(240, 90, 43, 0.3); }
+        
         @media (max-width: 380px) {
             .wallet-card { padding: 24px; }
             .stamps-grid { gap: 8px; }
-            .stamp-cup { width: 38px; height: 38px; }
-            .stamp-discount { width: 38px; height: 38px; }
+            .stamp-cup, .stamp-discount { width: 38px; height: 38px; }
             .logo-small { font-size: 24px; }
         }
     </style>
@@ -733,7 +290,30 @@
     </div>
 
     <div class="main-container">
-        <div id="cargando">Preparando tu experiencia<span class="loading-dots"></span></div>
+        
+        <div id="pantallaSkeleton">
+            <div class="wallet-card">
+                <div class="card-header-skeleton">
+                    <div>
+                        <div class="skeleton-block" style="width: 80px; height: 32px; margin-bottom: 6px;"></div>
+                        <div class="skeleton-block" style="width: 60px; height: 20px;"></div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                        <div class="skeleton-block" style="width: 90px; height: 20px; margin-bottom: 6px;"></div>
+                        <div class="skeleton-block" style="width: 70px; height: 14px;"></div>
+                    </div>
+                </div>
+                <div class="stamps-skeleton">
+                    <div class="stamps-grid">
+                        <div class="skeleton-circle"></div><div class="skeleton-circle"></div><div class="skeleton-circle"></div><div class="skeleton-circle"></div>
+                        <div class="skeleton-circle"></div><div class="skeleton-circle"></div><div class="skeleton-circle"></div><div class="skeleton-circle"></div>
+                    </div>
+                    <div class="skeleton-block" style="width: 80%; height: 14px; margin: 0 auto;"></div>
+                </div>
+                <div class="skeleton-block" style="width: 100%; height: 60px; margin-bottom: 28px;"></div>
+                <div class="skeleton-block" style="width: 140px; height: 140px; margin: 0 auto; border-radius: 18px;"></div>
+            </div>
+        </div>
 
         <div id="pantallaRegistro">
             <div class="registro-card">
@@ -757,7 +337,7 @@
                     <input type="tel" id="inputCelular" class="input-box" placeholder="Ej: 2215551234" required>
                 </div>
                 
-                <button class="btn-primary" id="btnCrearTarjeta">Crear/Entrar a mi Tarjeta </button>
+                <button class="btn-primary" id="btnCrearTarjeta">Crear/Entrar a mi Tarjeta</button>
                 <button id="btnInstalarApp">Instalar app en tu celular</button>
             </div>
         </div>
@@ -784,7 +364,24 @@
                             
                             <div class="stamps-container">
                                 <div class="stamps-grid" id="gridSellos"></div>
-                                <p class="stamps-text">Completa 8 sellos y lleva tu bebida gratis</p>
+                                <p class="stamps-text">Sumá sellos y disfrutá tus beneficios</p>
+                            </div>
+                            
+                            <div class="references-box">
+                                <div class="ref-item">
+                                    <div class="ref-icon-badge">%</div>
+                                    <span>Sello 3: 15% OFF en tu compra</span>
+                                    <span id="refStatus3" class="ref-text-status"></span>
+                                </div>
+                                <div class="ref-item">
+                                    <div class="ref-icon-badge">%</div>
+                                    <span>Sello 5: 25% OFF en tu compra</span>
+                                    <span id="refStatus5" class="ref-text-status"></span>
+                                </div>
+                                <div class="ref-item">
+                                    <div class="ref-icon-badge" style="border:none; font-size:14px; background:none;">☕</div>
+                                    <span>Sello 8: ¡Bebida completamente GRATIS!</span>
+                                </div>
                             </div>
                             
                             <div class="info-row">
@@ -841,9 +438,13 @@
                 this.app = initializeApp(firebaseConfig);
                 this.db = getFirestore(this.app);
                 this.unsubscribe = null;
+                
+                // Variables para control de animaciones (Mejora 2)
+                this.puntosAnteriores = -1;
+                this.primeraCarga = true;
 
                 this.ui = {
-                    cargando: document.getElementById('cargando'),
+                    skeleton: document.getElementById('pantallaSkeleton'),
                     registro: document.getElementById('pantallaRegistro'),
                     tarjeta: document.getElementById('pantallaTarjeta'),
                     nombre: document.getElementById('displayNombre'),
@@ -853,7 +454,9 @@
                     puntos: document.getElementById('displayPuntos'),
                     premio: document.getElementById('displayPremio'),
                     modalAlerta: document.getElementById('modalAlertaCustom'),
-                    textoAlerta: document.getElementById('textoAlertaCustom')
+                    textoAlerta: document.getElementById('textoAlertaCustom'),
+                    status3: document.getElementById('refStatus3'),
+                    status5: document.getElementById('refStatus5')
                 };
 
                 this.vincularEventos();
@@ -877,6 +480,7 @@
             iniciar() {
                 const celularLocal = localStorage.getItem('miTarjetaCafeTEL');
                 if (celularLocal) {
+                    this.cambiarPantalla('skeleton'); // Mostramos el skeleton de inmediato
                     this.abrirTarjeta(celularLocal);
                 } else {
                     this.cambiarPantalla('registro');
@@ -884,7 +488,7 @@
             }
 
             cambiarPantalla(pantalla) {
-                this.ui.cargando.style.display = pantalla === 'cargando' ? 'block' : 'none';
+                this.ui.skeleton.style.display = pantalla === 'skeleton' ? 'block' : 'none';
                 this.ui.registro.style.display = pantalla === 'registro' ? 'block' : 'none';
                 this.ui.tarjeta.style.display = pantalla === 'tarjeta' ? 'block' : 'none';
             }
@@ -904,8 +508,7 @@
                 celular = celular.replace(/\D/g,''); 
                 if(celular.length < 8) return this.mostrarAlerta("El numero de WhatsApp es demasiado corto. Revisa que este bien escrito.");
 
-                this.cambiarPantalla('cargando');
-                this.ui.cargando.innerHTML = "Sincronizando tu tarjeta<span class='loading-dots'></span>";
+                this.cambiarPantalla('skeleton');
 
                 try {
                     const docRef = doc(this.db, "clientes", celular);
@@ -917,6 +520,8 @@
                         await setDoc(docRef, { 
                             nombre: nombre, 
                             puntos: 0,
+                            desc3Usado: false,
+                            desc5Usado: false,
                             fechaRegistro: new Date().toISOString()
                         });
                     }
@@ -931,8 +536,6 @@
             }
 
             abrirTarjeta(celular) {
-                this.cambiarPantalla('tarjeta');
-                
                 this.ui.qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${celular}&bgcolor=FCD34D&color=4A0E17`;
                 this.ui.telLabel.innerText = `******${celular.slice(-4)}`;
 
@@ -940,34 +543,78 @@
                     if (docSnap.exists()) {
                         const datos = docSnap.data();
                         this.ui.nombre.innerText = datos.nombre;
-                        this.renderizarTazas(datos.puntos);
+                        
+                        // Pequeño delay artificial para que se aprecie la fluidez del Skeleton
+                        if(this.primeraCarga) {
+                            setTimeout(() => {
+                                this.cambiarPantalla('tarjeta');
+                                this.renderizarTazas(datos);
+                            }, 400);
+                        } else {
+                            this.renderizarTazas(datos);
+                        }
                     } else {
                         this.cerrarSesion(); 
                     }
                 });
             }
 
-            renderizarTazas(puntosActuales) {
-                const totalTazas = 8; // Actualizado a 8
+            renderizarTazas(datos) {
+                const puntosActuales = datos.puntos || 0;
+                const desc3Usado = datos.desc3Usado || false;
+                const desc5Usado = datos.desc5Usado || false;
+                const totalTazas = 8; 
+                
+                const animarNuevos = !this.primeraCarga && puntosActuales > this.puntosAnteriores;
+
                 this.ui.gridSellos.innerHTML = ''; 
 
                 for (let i = 1; i <= totalTazas; i++) {
                     const contenedorSvg = document.createElement('div');
+                    let esDescuento = false;
+                    let yaFueUsado = false;
                     
-                    // Si estamos en la posición 3 o 5, insertamos el descuento
-                    if (i === 3 || i === 5) {
+                    // Identificamos IDs únicos para los clipPaths de cada taza
+                    const uniqueId = `clip-taza-${i}`;
+
+                    if (i === 3) {
                         contenedorSvg.innerHTML = this.obtenerSvgDescuento();
+                        esDescuento = true;
+                        yaFueUsado = desc3Usado;
+                    } else if (i === 5) {
+                        contenedorSvg.innerHTML = this.obtenerSvgDescuento();
+                        esDescuento = true;
+                        yaFueUsado = desc5Usado;
                     } else {
-                        contenedorSvg.innerHTML = this.obtenerSvgTaza();
+                        contenedorSvg.innerHTML = this.obtenerSvgTaza(uniqueId);
                     }
                     
                     const svgElement = contenedorSvg.querySelector('svg'); 
                     
                     if (i <= puntosActuales) {
-                        svgElement.classList.add('filled');
+                        // El timeout asegura que la clase se aplique un instante después de montarse en el DOM, disparando las transiciones CSS
+                        setTimeout(() => {
+                            svgElement.classList.add('filled');
+                            
+                            // MEJORA 2: Explosión de partículas solo si es un punto NUEVO
+                            if (animarNuevos && i > this.puntosAnteriores) {
+                                setTimeout(() => this.dispararParticulas(svgElement), 300);
+                            }
+                        }, 50);
                     }
+                    
+                    if (esDescuento && yaFueUsado) {
+                        svgElement.classList.add('used');
+                    }
+                    
                     this.ui.gridSellos.appendChild(svgElement);
                 }
+
+                this.ui.status3.innerText = desc3Usado ? "Canjeado ✓" : (puntosActuales >= 3 ? "Disponible ✨" : "");
+                this.ui.status3.style.color = desc3Usado ? "var(--dark)" : "var(--accent)";
+                
+                this.ui.status5.innerText = desc5Usado ? "Canjeado ✓" : (puntosActuales >= 5 ? "Disponible ✨" : "");
+                this.ui.status5.style.color = desc5Usado ? "var(--dark)" : "var(--accent)";
 
                 this.ui.puntos.innerText = puntosActuales;
                 
@@ -977,6 +624,42 @@
                 } else {
                     this.ui.premio.innerText = "En progreso";
                     this.ui.premio.classList.remove('premio-listo');
+                }
+
+                this.puntosAnteriores = puntosActuales;
+                this.primeraCarga = false;
+            }
+
+            /* MEJORA 2: Lógica de Partículas con Web Animations API */
+            dispararParticulas(targetElement) {
+                const rect = targetElement.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                for (let i = 0; i < 12; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    document.body.appendChild(p);
+
+                    // Matemáticas para explosión radial
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = 25 + Math.random() * 35;
+                    const tx = Math.cos(angle) * velocity;
+                    const ty = Math.sin(angle) * velocity - 15; // Ligera tendencia hacia arriba
+
+                    p.style.left = centerX + 'px';
+                    p.style.top = centerY + 'px';
+
+                    p.animate([
+                        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                        { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`, opacity: 0 }
+                    ], {
+                        duration: 600 + Math.random() * 300,
+                        easing: 'cubic-bezier(0, .9, .57, 1)',
+                        fill: 'forwards'
+                    });
+
+                    setTimeout(() => p.remove(), 1000); // Limpieza del DOM
                 }
             }
 
@@ -988,13 +671,25 @@
                 </svg>`;
             }
 
-            obtenerSvgTaza() {
+            /* MEJORA 4: SVG rediseñado para ola líquida usando ClipPath */
+            obtenerSvgTaza(uniqueId) {
                 return `
                 <svg class="stamp-cup" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <clipPath id="${uniqueId}">
+                            <path d="M22,37 H78 V73 Q78,88 63,88 H37 Q22,88 22,73 Z" />
+                        </clipPath>
+                    </defs>
                     <path class="steam-path" d="M38,30 V12 M50,32 V8 M62,30 V16" stroke-linecap="round"/>
-                    <path class="cup-path" d="M20,35 H80 V75 Q80,90 65,90 H35 Q20,90 20,75 Z" />
-                    <path class="coffee-fill" d="M22,37 H78 V73 Q78,88 63,88 H37 Q22,88 22,73 Z" />
                     <path class="cup-handle" d="M80,45 Q95,45 95,60 T80,75" />
+                    
+                    <path class="cup-path" d="M20,35 H80 V75 Q80,90 65,90 H35 Q20,90 20,75 Z" />
+                    
+                    <g clip-path="url(#${uniqueId})">
+                        <g class="liquid-rise">
+                            <path class="liquid-wave-path" d="M -50 40 Q -25 30 0 40 T 50 40 T 100 40 T 150 40 V 100 H -50 Z" />
+                        </g>
+                    </g>
                 </svg>`;
             }
 
@@ -1022,9 +717,7 @@
 
         btnInstalar.addEventListener('click', async () => {
             if (!eventoInstalacion) return;
-            
             eventoInstalacion.prompt(); 
-            
             const { outcome } = await eventoInstalacion.userChoice;
             if (outcome === 'accepted') {
                 btnInstalar.style.display = 'none'; 
