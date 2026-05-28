@@ -347,13 +347,55 @@
             border: 2px dashed var(--dark-soft);
         }
 
-        .stamps-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
-            justify-items: center;
-        }
+/* Modifica la grilla para que sea 4x2 en vez de 5x2 */
+.stamps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+    justify-items: center;
+}
+
+/* === NUEVO: SELLO DE DESCUENTO === */
+.stamp-discount {
+    width: 44px;
+    height: 44px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.stamp-discount .discount-border {
+    fill: none;
+    stroke: var(--dark-soft);
+    stroke-width: 4;
+    stroke-dasharray: 8 4; /* Efecto de ticket punteado */
+    stroke-linecap: round;
+    transition: all 0.4s ease;
+}
+
+.stamp-discount .discount-text {
+    fill: var(--dark-soft);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 40px;
+    transition: all 0.4s ease;
+}
+
+/* Estado completado para el descuento */
+.stamp-discount.filled {
+    transform: scale(1.1) rotate(-10deg); /* Pequeño giro festivo */
+    filter: drop-shadow(0 4px 0px rgba(74, 14, 23, 0.15));
+}
+
+.stamp-discount.filled .discount-border {
+    fill: var(--accent);
+    stroke: var(--dark);
+    stroke-dasharray: none; /* Se vuelve una línea sólida al activarse */
+}
+
+.stamp-discount.filled .discount-text {
+    fill: var(--dark);
+    animation: celebratePulse 0.5s ease-in-out forwards;
+}
 
         /* === TAZAS ANIMADAS === */
         .stamp-cup {
@@ -743,7 +785,7 @@
                             
                             <div class="stamps-container">
                                 <div class="stamps-grid" id="gridSellos"></div>
-                                <p class="stamps-text">Completa 10 tazas y lleva tu bebida gratis</p>
+                                <p class="stamps-text">Completa 8 sellos y lleva tu bebida gratis</p>
                             </div>
                             
                             <div class="info-row">
@@ -753,7 +795,7 @@
                                 </div>
                                 <div style="text-align: right;">
                                     <div class="info-label">Progreso</div>
-                                    <div class="info-value info-value-points"><span id="displayPuntos">0</span>/10</div>
+                                    <div class="info-value info-value-points"><span id="displayPuntos">0</span>/8</div>
                                 </div>
                             </div>
                             
@@ -906,41 +948,48 @@
                 });
             }
 
+            
             renderizarTazas(puntosActuales) {
-                const totalTazas = 10;
-                this.ui.gridSellos.innerHTML = ''; 
+    const totalTazas = 8; // Actualizado a 8
+    this.ui.gridSellos.innerHTML = ''; 
 
-                for (let i = 1; i <= totalTazas; i++) {
-                    const contenedorSvg = document.createElement('div');
-                    contenedorSvg.innerHTML = this.obtenerSvgTaza();
-                    const svgElement = contenedorSvg.querySelector('svg'); 
-                    
-                    if (i <= puntosActuales) {
-                        svgElement.classList.add('filled');
-                    }
-                    this.ui.gridSellos.appendChild(svgElement);
-                }
+    for (let i = 1; i <= totalTazas; i++) {
+        const contenedorSvg = document.createElement('div');
+        
+        // Si estamos en la posición 3 o 5, insertamos el descuento
+        if (i === 3 || i === 5) {
+            contenedorSvg.innerHTML = this.obtenerSvgDescuento();
+        } else {
+            contenedorSvg.innerHTML = this.obtenerSvgTaza();
+        }
+        
+        const svgElement = contenedorSvg.querySelector('svg'); 
+        
+        if (i <= puntosActuales) {
+            svgElement.classList.add('filled');
+        }
+        this.ui.gridSellos.appendChild(svgElement);
+    }
 
-                this.ui.puntos.innerText = puntosActuales;
-                
-                if(puntosActuales >= totalTazas) {
-                    this.ui.premio.innerText = "Bebida lista!";
-                    this.ui.premio.classList.add('premio-listo');
-                } else {
-                    this.ui.premio.innerText = "En progreso";
-                    this.ui.premio.classList.remove('premio-listo');
-                }
-            }
+    this.ui.puntos.innerText = puntosActuales;
+    
+    if(puntosActuales >= totalTazas) {
+        this.ui.premio.innerText = "Bebida lista!";
+        this.ui.premio.classList.add('premio-listo');
+    } else {
+        this.ui.premio.innerText = "En progreso";
+        this.ui.premio.classList.remove('premio-listo');
+    }
+}
 
-            obtenerSvgTaza() {
-                return `
-                <svg class="stamp-cup" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <path class="steam-path" d="M38,30 V12 M50,32 V8 M62,30 V16" stroke-linecap="round"/>
-                    <path class="cup-path" d="M20,35 H80 V75 Q80,90 65,90 H35 Q20,90 20,75 Z" />
-                    <path class="coffee-fill" d="M22,37 H78 V73 Q78,88 63,88 H37 Q22,88 22,73 Z" />
-                    <path class="cup-handle" d="M80,45 Q95,45 95,60 T80,75" />
-                </svg>`;
-            }
+// Agrega este nuevo método justo debajo de obtenerSvgTaza()
+obtenerSvgDescuento() {
+    return `
+    <svg class="stamp-discount" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle class="discount-border" cx="50" cy="50" r="38" />
+        <text class="discount-text" x="50" y="65" text-anchor="middle">%</text>
+    </svg>`;
+}
 
             cerrarSesion() {
                 if (this.unsubscribe) this.unsubscribe(); 
