@@ -341,12 +341,12 @@
         .stamps-container {
             background: rgba(255, 255, 255, 0.4);
             border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 24px 20px;
+            margin-bottom: 16px;
             border: 2px dashed var(--dark-soft);
         }
 
-        /* Grilla de 4x2 */
+        /* Grilla balanceada de 4x2 */
         .stamps-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -427,7 +427,43 @@
             100% { transform: translateY(-15px); opacity: 0; }
         }
 
-        /* === NUEVO: SELLO DE DESCUENTO === */
+        /* === NUEVO: SELLO MEDIALUNA (POSICIÓN 3) === */
+        .stamp-medialuna {
+            width: 44px;
+            height: 44px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .stamp-medialuna .medialuna-body {
+            fill: none;
+            stroke: var(--dark-soft);
+            stroke-width: 3;
+            transition: all 0.4s ease;
+        }
+
+        .stamp-medialuna .medialuna-lines {
+            fill: none;
+            stroke: var(--dark-soft);
+            stroke-width: 2;
+            transition: all 0.4s ease;
+        }
+
+        .stamp-medialuna.filled {
+            transform: scale(1.1) rotate(8deg);
+            filter: drop-shadow(0 4px 0px rgba(74, 14, 23, 0.15));
+        }
+
+        .stamp-medialuna.filled .medialuna-body {
+            fill: #E68A00; /* Dorado medialuna horneada */
+            stroke: var(--dark);
+        }
+
+        .stamp-medialuna.filled .medialuna-lines {
+            stroke: var(--dark);
+            opacity: 0.5;
+        }
+
+        /* === SELLO DE DESCUENTO % (POSICIÓN 5) === */
         .stamp-discount {
             width: 44px;
             height: 44px;
@@ -438,7 +474,7 @@
             fill: none;
             stroke: var(--dark-soft);
             stroke-width: 4;
-            stroke-dasharray: 8 4; /* Efecto de ticket punteado */
+            stroke-dasharray: 6 3;
             stroke-linecap: round;
             transition: all 0.4s ease;
         }
@@ -447,44 +483,81 @@
             fill: var(--dark-soft);
             font-family: 'Montserrat', sans-serif;
             font-weight: 900;
-            font-size: 40px;
+            font-size: 42px;
             transition: all 0.4s ease;
         }
 
-        /* Estado completado para el descuento */
         .stamp-discount.filled {
-            transform: scale(1.1) rotate(-10deg); /* Pequeño giro festivo */
+            transform: scale(1.1) rotate(-10deg);
             filter: drop-shadow(0 4px 0px rgba(74, 14, 23, 0.15));
         }
 
         .stamp-discount.filled .discount-border {
             fill: var(--accent);
             stroke: var(--dark);
-            stroke-dasharray: none; /* Se vuelve una línea sólida al activarse */
+            stroke-dasharray: none;
         }
 
         .stamp-discount.filled .discount-text {
             fill: var(--dark);
-            animation: celebratePulse 0.5s ease-in-out forwards;
         }
 
-        /* Retrasos de animación */
-        .stamp-cup.filled:nth-child(1) { animation-delay: 0ms; }
-        .stamp-cup.filled:nth-child(2) { animation-delay: 50ms; }
-        .stamp-discount.filled:nth-child(3) { animation-delay: 100ms; }
-        .stamp-cup.filled:nth-child(4) { animation-delay: 150ms; }
-        .stamp-discount.filled:nth-child(5) { animation-delay: 200ms; }
-        .stamp-cup.filled:nth-child(6) { animation-delay: 250ms; }
-        .stamp-cup.filled:nth-child(7) { animation-delay: 300ms; }
-        .stamp-cup.filled:nth-child(8) { animation-delay: 350ms; }
+        /* ESTADO YA CANJEADO (ANTI-PILLOS) */
+        .stamp-cup.used, .stamp-discount.used, .stamp-medialuna.used {
+            opacity: 0.25 !important;
+            filter: grayscale(100%) contrast(70%) !important;
+            transform: scale(0.95) !important;
+            box-shadow: none !important;
+        }
 
         .stamps-text {
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--dark);
             opacity: 0.8;
             margin: 0;
             font-weight: 600;
+        }
+
+        /* === NUEVO APARTADO DE REFERENCIAS === */
+        .references-box {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 12px 14px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(74, 14, 23, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ref-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .ref-icon-badge {
+            width: 20px;
+            height: 20px;
+            background: var(--bg-card);
+            border: 1.5px solid var(--dark);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .ref-text-status {
+            margin-left: auto;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.6;
         }
 
         /* === INFO ROW === */
@@ -713,6 +786,7 @@
             .stamps-grid { gap: 8px; }
             .stamp-cup { width: 38px; height: 38px; }
             .stamp-discount { width: 38px; height: 38px; }
+            .stamp-medialuna { width: 38px; height: 38px; }
             .logo-small { font-size: 24px; }
         }
     </style>
@@ -784,7 +858,24 @@
                             
                             <div class="stamps-container">
                                 <div class="stamps-grid" id="gridSellos"></div>
-                                <p class="stamps-text">Completa 8 sellos y lleva tu bebida gratis</p>
+                                <p class="stamps-text">Sumá sellos y disfrutá tus beneficios</p>
+                            </div>
+                            
+                            <div class="references-box">
+                                <div class="ref-item">
+                                    <div class="ref-icon-badge">🥐</div>
+                                    <span>Sello 3: ¡Medialuna de Regalo!</span>
+                                    <span id="refStatus3" class="ref-text-status"></span>
+                                </div>
+                                <div class="ref-item">
+                                    <div class="ref-icon-badge">%</div>
+                                    <span>Sello 5: 15% OFF en tu compra</span>
+                                    <span id="refStatus5" class="ref-text-status"></span>
+                                </div>
+                                <div class="ref-item">
+                                    <div class="ref-icon-badge">☕</div>
+                                    <span>Sello 8: ¡Bebida completamente GRATIS!</span>
+                                </div>
                             </div>
                             
                             <div class="info-row">
@@ -853,7 +944,9 @@
                     puntos: document.getElementById('displayPuntos'),
                     premio: document.getElementById('displayPremio'),
                     modalAlerta: document.getElementById('modalAlertaCustom'),
-                    textoAlerta: document.getElementById('textoAlertaCustom')
+                    textoAlerta: document.getElementById('textoAlertaCustom'),
+                    status3: document.getElementById('refStatus3'),
+                    status5: document.getElementById('refStatus5')
                 };
 
                 this.vincularEventos();
@@ -917,6 +1010,8 @@
                         await setDoc(docRef, { 
                             nombre: nombre, 
                             puntos: 0,
+                            desc3Usado: false,
+                            desc5Usado: false,
                             fechaRegistro: new Date().toISOString()
                         });
                     }
@@ -940,34 +1035,60 @@
                     if (docSnap.exists()) {
                         const datos = docSnap.data();
                         this.ui.nombre.innerText = datos.nombre;
-                        this.renderizarTazas(datos.puntos);
+                        this.renderizarTazas(datos); // Mandamos todos los datos para validar los booleanos
                     } else {
                         this.cerrarSesion(); 
                     }
                 });
             }
 
-            renderizarTazas(puntosActuales) {
-                const totalTazas = 8; // Actualizado a 8
+            renderizarTazas(datos) {
+                const puntosActuales = datos.puntos || 0;
+                // Si no existen estos campos en Firebase, por defecto asumimos false
+                const desc3Usado = datos.desc3Usado || false;
+                const desc5Usado = datos.desc5Usado || false;
+
+                const totalTazas = 8; 
                 this.ui.gridSellos.innerHTML = ''; 
 
                 for (let i = 1; i <= totalTazas; i++) {
                     const contenedorSvg = document.createElement('div');
+                    let esDescuento = false;
+                    let yaFueUsado = false;
                     
-                    // Si estamos en la posición 3 o 5, insertamos el descuento
-                    if (i === 3 || i === 5) {
+                    if (i === 3) {
+                        contenedorSvg.innerHTML = this.obtenerSvgMedialuna();
+                        esDescuento = true;
+                        yaFueUsado = desc3Usado;
+                    } else if (i === 5) {
                         contenedorSvg.innerHTML = this.obtenerSvgDescuento();
+                        esDescuento = true;
+                        yaFueUsado = desc5Usado;
                     } else {
                         contenedorSvg.innerHTML = this.obtenerSvgTaza();
                     }
                     
                     const svgElement = contenedorSvg.querySelector('svg'); 
                     
+                    // Si el cliente ya alcanzó esa posición en compras, se "llena" el sello
                     if (i <= puntosActuales) {
                         svgElement.classList.add('filled');
                     }
+                    
+                    // CONTROL ANTI-PILLOS: Si ya fue usado en caja, se le aplica el estilo deshabilitado
+                    if (esDescuento && yaFueUsado) {
+                        svgElement.classList.add('used');
+                    }
+                    
                     this.ui.gridSellos.appendChild(svgElement);
                 }
+
+                // Actualizar los textos del panel de referencias para más claridad
+                this.ui.status3.innerText = desc3Usado ? "Canjeado ✓" : (puntosActuales >= 3 ? "Disponible ✨" : "");
+                this.ui.status3.style.color = desc3Usado ? "var(--dark)" : "var(--accent)";
+                
+                this.ui.status5.innerText = desc5Usado ? "Canjeado ✓" : (puntosActuales >= 5 ? "Disponible ✨" : "");
+                this.ui.status5.style.color = desc5Usado ? "var(--dark)" : "var(--accent)";
 
                 this.ui.puntos.innerText = puntosActuales;
                 
@@ -978,6 +1099,14 @@
                     this.ui.premio.innerText = "En progreso";
                     this.ui.premio.classList.remove('premio-listo');
                 }
+            }
+
+            obtenerSvgMedialuna() {
+                return `
+                <svg class="stamp-medialuna" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path class="medialuna-body" d="M15,65 Q50,15 85,65 Q68,55 50,55 Q32,55 15,65 Z" />
+                    <path class="medialuna-lines" d="M32,48 Q50,33 68,48 M39,40 Q50,26 61,40 M45,34 Q50,22 55,34" stroke-linecap="round"/>
+                </svg>`;
             }
 
             obtenerSvgDescuento() {
