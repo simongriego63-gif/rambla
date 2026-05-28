@@ -53,7 +53,6 @@ body {
 .acciones-content { width: 100%; max-width: 360px; background: var(--bg-card); border-radius: 24px; padding: 32px 24px; box-sizing: border-box; color: var(--dark); text-align: center; border: 3px solid var(--dark); box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15); animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transition: all 0.3s ease; }
 @keyframes modalPop { from {opacity: 0; transform: scale(0.9);} to {opacity: 1; transform: scale(1);} }
 
-/* Animación cuando hay premio a la vista */
 .glow-premio { animation: glowPulso 2s infinite; border-color: var(--white) !important; }
 @keyframes glowPulso { 0%, 100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); } 50% { box-shadow: 0 0 30px rgba(255, 255, 255, 1); } }
 
@@ -62,10 +61,37 @@ body {
 .cliente-nombre { font-size: 20px; font-weight: 800; color: var(--dark); }
 .cliente-tel { color: var(--dark); opacity: 0.6; font-size: 13px; font-family: monospace; font-weight: 600; margin-top: 4px; display: block;}
 
-.estado-sellos-container { background-color: rgba(255, 255, 255, 0.5); border-radius: 20px; padding: 24px; margin-bottom: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px dashed var(--dark-soft); }
-.estado-sellos-texto { font-size: 12px; color: var(--dark); opacity: 0.8; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;}
-.estado-sellos-numero { color: var(--accent); font-weight: 900; font-size: 52px; line-height: 1; font-family: 'Montserrat', sans-serif;}
-.estado-sellos-numero span { font-size: 20px; color: var(--dark); opacity: 0.5;}
+/* === TARJETA ESTADO DE SELLOS === */
+.estado-sellos-container { 
+    background-color: rgba(255, 255, 255, 0.5); border-radius: 20px; padding: 24px; 
+    margin-bottom: 24px; display: flex; flex-direction: column; justify-content: center; 
+    align-items: center; border: 2px dashed var(--dark-soft); 
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
+.estado-sellos-texto { font-size: 12px; color: var(--dark); opacity: 0.8; margin-bottom: 5px; font-weight: 700; text-transform: uppercase; transition: all 0.3s ease;}
+.estado-sellos-numero { color: var(--accent); font-weight: 900; font-size: 52px; line-height: 1; font-family: 'Montserrat', sans-serif; transition: all 0.3s ease;}
+.estado-sellos-numero span { font-size: 24px; color: var(--dark); opacity: 0.5; font-weight: 800; transition: all 0.3s ease;}
+
+/* EFECTO 8/8 COMPLETADO */
+.estado-sellos-container.completado {
+    background-color: var(--white);
+    border: 3px solid var(--accent);
+    box-shadow: 0 8px 20px rgba(240, 90, 43, 0.25);
+    transform: scale(1.03);
+}
+.estado-sellos-container.completado .estado-sellos-texto {
+    color: var(--accent);
+    opacity: 1;
+    letter-spacing: 1px;
+}
+.estado-sellos-container.completado .estado-sellos-numero {
+    color: var(--dark);
+}
+.estado-sellos-container.completado .estado-sellos-numero span {
+    color: var(--accent);
+    opacity: 0.8;
+}
 
 /* BOTONES */
 .btn-stack { display: flex; flex-direction: column; gap: 12px; width: 100%;}
@@ -74,7 +100,6 @@ body {
 .btn-brand { background: var(--accent); color: var(--white); border-color: var(--accent); box-shadow: 0 4px 15px rgba(240, 90, 43, 0.25); }
 .btn-brand:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(240, 90, 43, 0.35); }
 
-/* Feedback animado al sumar */
 .btn-success { background: var(--success) !important; border-color: var(--success) !important; color: var(--white) !important; transform: scale(1.02); }
 
 .btn-premio-intermedio { background: transparent; color: var(--accent); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; gap: 8px; }
