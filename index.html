@@ -92,7 +92,7 @@
             box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
         }
 
-        /* === SKELETON LOADING (MEJORA 3) === */
+        /* === SKELETON LOADING === */
         #pantallaSkeleton {
             display: none;
             width: 100%;
@@ -165,19 +165,19 @@
         .stamps-container { background: rgba(255, 255, 255, 0.4); border-radius: 20px; padding: 24px 20px; margin-bottom: 16px; border: 2px dashed var(--dark-soft); }
         .stamps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; justify-items: center; }
 
-        /* === TAZAS CON EFECTO LÍQUIDO REALISTA (MEJORA 4) === */
+        /* === TAZAS CON LLENADO LÍQUIDO LISO Y FLUIDO (MEJORA 1) === */
         .stamp-cup { width: 44px; height: 44px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .stamp-cup .cup-path { fill: none; stroke: var(--dark-soft); stroke-width: 2; transition: all 0.4s ease; }
         .stamp-cup .cup-handle { fill: none; stroke: var(--dark-soft); stroke-width: 4; stroke-linecap: round; transition: all 0.4s ease; }
-        .stamp-cup .steam-path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; opacity: 0; }
+        .stamp-cup .steam-path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; opacity: 0; transition: opacity 0.4s ease; }
         
-        .liquid-rise {
-            transform: translateY(60px); /* Oculto abajo */
-            transition: transform 0s;
-        }
-        
-        .liquid-wave-path {
-            fill: var(--accent);
+        /* Silueta interna limpia para el café plano */
+        .stamp-cup .coffee-fill {
+            fill: none;
+            opacity: 0;
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
         }
 
         .stamp-cup.filled {
@@ -187,21 +187,15 @@
         .stamp-cup.filled .cup-path { fill: var(--dark); stroke: var(--dark); }
         .stamp-cup.filled .cup-handle { stroke: var(--dark); }
         
-        .stamp-cup.filled .liquid-rise {
-            transform: translateY(0);
-            transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        /* Animación del llenado plano, suave y sin saltos */
+        .stamp-cup.filled .coffee-fill {
+            fill: var(--accent);
+            opacity: 1;
+            transform: scaleY(1);
         }
 
-        .stamp-cup.filled .liquid-wave-path {
-            animation: waveMotion 1.5s linear infinite;
-        }
+        .stamp-cup.filled .steam-path { opacity: 0.8; animation: steam 2.5s ease-in-out infinite; animation-delay: 0.5s; }
 
-        .stamp-cup.filled .steam-path { opacity: 0.8; animation: steam 2.5s ease-in-out infinite; animation-delay: 1s; }
-
-        @keyframes waveMotion {
-            0% { transform: translateX(-50px); }
-            100% { transform: translateX(0px); }
-        }
         @keyframes steam {
             0% { transform: translateY(0); opacity: 0; }
             20% { opacity: 0.8; }
@@ -246,7 +240,7 @@
         .back-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--accent); font-size: 56px; letter-spacing: -2px; margin: 0; line-height: 1; }
         .back-subtitle { font-size: 16px; color: var(--dark); font-weight: 800; letter-spacing: 6px; text-transform: uppercase; margin-top: 12px; }
 
-        /* === SISTEMA DE PARTÍCULAS (MEJORA 2) === */
+        /* === SISTEMA DE PARTÍCULAS MEJORADO === */
         .particle {
             position: fixed;
             width: 8px;
@@ -439,7 +433,6 @@
                 this.db = getFirestore(this.app);
                 this.unsubscribe = null;
                 
-                // Variables para control de animaciones (Mejora 2)
                 this.puntosAnteriores = -1;
                 this.primeraCarga = true;
 
@@ -480,7 +473,7 @@
             iniciar() {
                 const celularLocal = localStorage.getItem('miTarjetaCafeTEL');
                 if (celularLocal) {
-                    this.cambiarPantalla('skeleton'); // Mostramos el skeleton de inmediato
+                    this.cambiarPantalla('skeleton'); 
                     this.abrirTarjeta(celularLocal);
                 } else {
                     this.cambiarPantalla('registro');
@@ -544,7 +537,6 @@
                         const datos = docSnap.data();
                         this.ui.nombre.innerText = datos.nombre;
                         
-                        // Pequeño delay artificial para que se aprecie la fluidez del Skeleton
                         if(this.primeraCarga) {
                             setTimeout(() => {
                                 this.cambiarPantalla('tarjeta');
@@ -565,7 +557,9 @@
                 const desc5Usado = datos.desc5Usado || false;
                 const totalTazas = 8; 
                 
-                const animarNuevos = !this.primeraCarga && puntosActuales > this.puntosAnteriores;
+                // Corrección del bug: Capturamos el estado previo real en memoria
+                const puntosPrevios = this.puntosAnteriores;
+                const animarNuevos = !this.primeraCarga && puntosActuales > puntosPrevios;
 
                 this.ui.gridSellos.innerHTML = ''; 
 
@@ -573,9 +567,6 @@
                     const contenedorSvg = document.createElement('div');
                     let esDescuento = false;
                     let yaFueUsado = false;
-                    
-                    // Identificamos IDs únicos para los clipPaths de cada taza
-                    const uniqueId = `clip-taza-${i}`;
 
                     if (i === 3) {
                         contenedorSvg.innerHTML = this.obtenerSvgDescuento();
@@ -586,19 +577,18 @@
                         esDescuento = true;
                         yaFueUsado = desc5Usado;
                     } else {
-                        contenedorSvg.innerHTML = this.obtenerSvgTaza(uniqueId);
+                        contenedorSvg.innerHTML = this.obtenerSvgTaza();
                     }
                     
                     const svgElement = contenedorSvg.querySelector('svg'); 
                     
                     if (i <= puntosActuales) {
-                        // El timeout asegura que la clase se aplique un instante después de montarse en el DOM, disparando las transiciones CSS
                         setTimeout(() => {
                             svgElement.classList.add('filled');
                             
-                            // MEJORA 2: Explosión de partículas solo si es un punto NUEVO
-                            if (animarNuevos && i > this.puntosAnteriores) {
-                                setTimeout(() => this.dispararParticulas(svgElement), 300);
+                            // Disparador de festejo arreglado usando el historial correcto de puntos
+                            if (animarNuevos && i > puntosPrevios) {
+                                setTimeout(() => this.dispararParticulas(svgElement), 150);
                             }
                         }, 50);
                     }
@@ -630,7 +620,6 @@
                 this.primeraCarga = false;
             }
 
-            /* MEJORA 2: Lógica de Partículas con Web Animations API */
             dispararParticulas(targetElement) {
                 const rect = targetElement.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
@@ -641,11 +630,10 @@
                     p.className = 'particle';
                     document.body.appendChild(p);
 
-                    // Matemáticas para explosión radial
                     const angle = Math.random() * Math.PI * 2;
                     const velocity = 25 + Math.random() * 35;
                     const tx = Math.cos(angle) * velocity;
-                    const ty = Math.sin(angle) * velocity - 15; // Ligera tendencia hacia arriba
+                    const ty = Math.sin(angle) * velocity - 15; 
 
                     p.style.left = centerX + 'px';
                     p.style.top = centerY + 'px';
@@ -659,7 +647,7 @@
                         fill: 'forwards'
                     });
 
-                    setTimeout(() => p.remove(), 1000); // Limpieza del DOM
+                    setTimeout(() => p.remove(), 1000); 
                 }
             }
 
@@ -671,25 +659,13 @@
                 </svg>`;
             }
 
-            /* MEJORA 4: SVG rediseñado para ola líquida usando ClipPath */
-            obtenerSvgTaza(uniqueId) {
+            obtenerSvgTaza() {
                 return `
                 <svg class="stamp-cup" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <clipPath id="${uniqueId}">
-                            <path d="M22,37 H78 V73 Q78,88 63,88 H37 Q22,88 22,73 Z" />
-                        </clipPath>
-                    </defs>
                     <path class="steam-path" d="M38,30 V12 M50,32 V8 M62,30 V16" stroke-linecap="round"/>
-                    <path class="cup-handle" d="M80,45 Q95,45 95,60 T80,75" />
-                    
                     <path class="cup-path" d="M20,35 H80 V75 Q80,90 65,90 H35 Q20,90 20,75 Z" />
-                    
-                    <g clip-path="url(#${uniqueId})">
-                        <g class="liquid-rise">
-                            <path class="liquid-wave-path" d="M -50 40 Q -25 30 0 40 T 50 40 T 100 40 T 150 40 V 100 H -50 Z" />
-                        </g>
-                    </g>
+                    <path class="coffee-fill" d="M22,37 H78 V73 Q78,88 63,88 H37 Q22,88 22,73 Z" />
+                    <path class="cup-handle" d="M80,45 Q95,45 95,60 T80,75" />
                 </svg>`;
             }
 
