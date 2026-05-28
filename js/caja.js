@@ -38,7 +38,6 @@ class BekiCajaApp {
         this.ui.textoConfirm.innerText = mensaje;
         this.ui.modalConfirm.style.display = 'flex';
         
-        // Limpiamos eventos previos para que no se dupliquen
         const btnAceptar = document.getElementById('btnAceptarConfirm');
         const nuevoBtnAceptar = btnAceptar.cloneNode(true);
         btnAceptar.parentNode.replaceChild(nuevoBtnAceptar, btnAceptar);
@@ -138,7 +137,6 @@ class BekiCajaApp {
             if (docSnap.exists()) {
                 const datos = docSnap.data();
                 
-                // Guardamos todos los datos relevantes del cliente
                 this.clienteActual = {
                     id: telefono,
                     puntos: datos.puntos || 0,
@@ -148,9 +146,9 @@ class BekiCajaApp {
                 
                 document.getElementById('uiNombre').innerText = datos.nombre;
                 document.getElementById('uiTel').innerText = telefono;
-                document.getElementById('uiSellos').innerText = this.clienteActual.puntos;
                 document.getElementById('uiAvatar').innerText = datos.nombre.charAt(0).toUpperCase();
 
+                this.actualizarVistaPuntos();
                 this.renderizarBotonesEspeciales();
 
                 this.ui.loader.style.display = 'none';
@@ -166,7 +164,21 @@ class BekiCajaApp {
         }
     }
 
-    // LÓGICA NUEVA: Evalúa qué botones mostrar según los puntos y usos
+    // NUEVO: Controla la apariencia visual del 8/8
+    actualizarVistaPuntos() {
+        document.getElementById('uiSellos').innerText = this.clienteActual.puntos;
+        const contenedor = document.querySelector('.estado-sellos-container');
+        const texto = document.querySelector('.estado-sellos-texto');
+        
+        if (this.clienteActual.puntos >= 8) {
+            contenedor.classList.add('completado');
+            texto.innerText = "¡TARJETA COMPLETA!";
+        } else {
+            contenedor.classList.remove('completado');
+            texto.innerText = "TAZAS ACUMULADAS:";
+        }
+    }
+
     renderizarBotonesEspeciales() {
         this.ui.contenedorPremios.innerHTML = '';
         this.ui.contenedorAcciones.classList.remove('glow-premio');
@@ -174,27 +186,32 @@ class BekiCajaApp {
         const ptos = this.clienteActual.puntos;
         let tienePremioPendiente = false;
 
-        // Mostrar Sumar Sello (A menos que ya tenga 8)
         document.getElementById('btnSumar').style.display = ptos < 8 ? 'block' : 'none';
 
-        // Lógica Sello 3 (15% OFF)
         if (ptos >= 3 && !this.clienteActual.desc3Usado) {
-            this.crearBotonDescuento("Canjear 15% OFF (Sello 3)", 'desc3Usado');
+            this.crearBotonDescuento("Canjear 15% OFF", 'desc3Usado');
             tienePremioPendiente = true;
         }
 
-        // Lógica Sello 5 (25% OFF)
         if (ptos >= 5 && !this.clienteActual.desc5Usado) {
-            this.crearBotonDescuento("Canjear 25% OFF (Sello 5)", 'desc5Usado');
+            this.crearBotonDescuento("Canjear 25% OFF", 'desc5Usado');
             tienePremioPendiente = true;
         }
 
-        // Lógica Sello 8 (Premio Final)
         if (ptos >= 8) {
             const btnCanjeTotal = document.createElement('button');
             btnCanjeTotal.className = 'btn btn-canje';
             btnCanjeTotal.style.display = 'block';
-            btnCanjeTotal.innerHTML = '☕ Entregar Bebida Gratis';
+            // Insertamos el SVG de la taza en lugar del emoji
+            btnCanjeTotal.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <svg viewBox="0 0 100 100" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20,35 H80 V75 Q80,90 65,90 H35 Q20,90 20,75 Z" fill="var(--white)"/>
+                        <path d="M80,45 Q95,45 95,60 T80,75" fill="none" stroke="var(--white)" stroke-width="6" stroke-linecap="round"/>
+                    </svg>
+                    Entregar Bebida Gratis
+                </div>
+            `;
             btnCanjeTotal.onclick = () => this.canjearPremioFinal();
             this.ui.contenedorPremios.appendChild(btnCanjeTotal);
             tienePremioPendiente = true;
@@ -208,7 +225,16 @@ class BekiCajaApp {
     crearBotonDescuento(texto, campoDb) {
         const btn = document.createElement('button');
         btn.className = 'btn btn-premio-intermedio';
-        btn.innerHTML = `% ${texto}`;
+        // Insertamos el SVG del porcentaje en lugar del emoji
+        btn.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <svg viewBox="0 0 100 100" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8" stroke-dasharray="10 6" />
+                    <text x="50" y="67" text-anchor="middle" fill="currentColor" font-family="'Montserrat', sans-serif" font-weight="900" font-size="46px">%</text>
+                </svg>
+                ${texto}
+            </div>
+        `;
         btn.onclick = () => this.registrarDescuento(campoDb, texto);
         this.ui.contenedorPremios.appendChild(btn);
     }
@@ -217,12 +243,11 @@ class BekiCajaApp {
         this.mostrarConfirmacion(`¿Confirmas aplicar el descuento: ${nombreDesc}?`, async () => {
             try {
                 const docRef = doc(this.db, "clientes", this.clienteActual.id);
-                // Usamos sintaxis dinámica para actualizar el booleano
                 await updateDoc(docRef, { [campoDb]: true }); 
                 
                 this.vibrar([100, 50, 100]); 
-                this.clienteActual[campoDb] = true; // Actualizamos la memoria
-                this.renderizarBotonesEspeciales(); // Recargamos UI
+                this.clienteActual[campoDb] = true; 
+                this.renderizarBotonesEspeciales(); 
 
             } catch(e) {
                 this.mostrarAlerta("Ocurrió un error al canjear el descuento.");
@@ -244,9 +269,8 @@ class BekiCajaApp {
             await updateDoc(docRef, { puntos: increment(cantidad) });
             
             this.clienteActual.puntos += cantidad;
-            document.getElementById('uiSellos').innerText = this.clienteActual.puntos;
+            this.actualizarVistaPuntos();
             
-            // EFECTO POSITIVO AL SUMAR
             if(cantidad === 1) {
                 this.vibrar(50); 
                 btn.classList.add('btn-success');
@@ -276,7 +300,6 @@ class BekiCajaApp {
                 const docRef = doc(this.db, "clientes", this.clienteActual.id);
                 const fechaAutomatica = new Date().toISOString(); 
                 
-                // Reiniciamos todo el progreso para una nueva tarjeta
                 await updateDoc(docRef, { 
                     puntos: 0,
                     desc3Usado: false,
