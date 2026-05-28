@@ -1,15 +1,22 @@
-const CACHE_NAME = 'beki-cache-v1'; // Nombre actualizado a beki
+const CACHE_NAME = 'beki-cache-v2'; // Subimos a v2 para que los celulares descarten la memoria vieja
 
 // Lista de archivos clave que el celular debe guardar en memoria
 const urlsToCache = [
   './',
   './index.html',
-  './barista.html',
+  './caja.html',
   './admin.html',
   './manifest.json',
-  './manifest-barista.json', // Agregamos el de la caja
-  './manifest-admin.json',   // Agregamos el del panel
-  './icon.png'
+  './caja.json',   
+  './admin.json',   
+  './icon.png',
+  
+  // ¡Agregamos los archivos de las carpetas nuevas!
+  './css/style.css',
+  './css/caja.css',
+  './js/firebase-config.js',
+  './js/app.js',
+  './js/caja.js'
 ];
 
 // 1. INSTALACIÓN: Guarda los archivos en caché
@@ -32,6 +39,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
+            console.log('Borrando caché antiguo:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -43,6 +51,11 @@ self.addEventListener('activate', (event) => {
 
 // 3. FETCH: Sirve los archivos desde el caché para que cargue rapidísimo
 self.addEventListener('fetch', (event) => {
+  // Ignoramos las peticiones a Firebase u otras APIs externas para que no se traben
+  if (event.request.url.includes('firestore.googleapis.com') || event.request.url.includes('identitytoolkit')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
