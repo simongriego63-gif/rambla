@@ -127,7 +127,6 @@
             margin-bottom: 30px;
         }
 
-        /* Nuevo contenedor animado para el texto + SVG */
         .logo-animado {
             display: flex;
             flex-direction: column;
@@ -347,55 +346,14 @@
             border: 2px dashed var(--dark-soft);
         }
 
-/* Modifica la grilla para que sea 4x2 en vez de 5x2 */
-.stamps-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 16px;
-    justify-items: center;
-}
-
-/* === NUEVO: SELLO DE DESCUENTO === */
-.stamp-discount {
-    width: 44px;
-    height: 44px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.stamp-discount .discount-border {
-    fill: none;
-    stroke: var(--dark-soft);
-    stroke-width: 4;
-    stroke-dasharray: 8 4; /* Efecto de ticket punteado */
-    stroke-linecap: round;
-    transition: all 0.4s ease;
-}
-
-.stamp-discount .discount-text {
-    fill: var(--dark-soft);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    font-size: 40px;
-    transition: all 0.4s ease;
-}
-
-/* Estado completado para el descuento */
-.stamp-discount.filled {
-    transform: scale(1.1) rotate(-10deg); /* Pequeño giro festivo */
-    filter: drop-shadow(0 4px 0px rgba(74, 14, 23, 0.15));
-}
-
-.stamp-discount.filled .discount-border {
-    fill: var(--accent);
-    stroke: var(--dark);
-    stroke-dasharray: none; /* Se vuelve una línea sólida al activarse */
-}
-
-.stamp-discount.filled .discount-text {
-    fill: var(--dark);
-    animation: celebratePulse 0.5s ease-in-out forwards;
-}
+        /* Grilla de 4x2 */
+        .stamps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+            justify-items: center;
+        }
 
         /* === TAZAS ANIMADAS === */
         .stamp-cup {
@@ -469,16 +427,56 @@
             100% { transform: translateY(-15px); opacity: 0; }
         }
 
+        /* === NUEVO: SELLO DE DESCUENTO === */
+        .stamp-discount {
+            width: 44px;
+            height: 44px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .stamp-discount .discount-border {
+            fill: none;
+            stroke: var(--dark-soft);
+            stroke-width: 4;
+            stroke-dasharray: 8 4; /* Efecto de ticket punteado */
+            stroke-linecap: round;
+            transition: all 0.4s ease;
+        }
+
+        .stamp-discount .discount-text {
+            fill: var(--dark-soft);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 40px;
+            transition: all 0.4s ease;
+        }
+
+        /* Estado completado para el descuento */
+        .stamp-discount.filled {
+            transform: scale(1.1) rotate(-10deg); /* Pequeño giro festivo */
+            filter: drop-shadow(0 4px 0px rgba(74, 14, 23, 0.15));
+        }
+
+        .stamp-discount.filled .discount-border {
+            fill: var(--accent);
+            stroke: var(--dark);
+            stroke-dasharray: none; /* Se vuelve una línea sólida al activarse */
+        }
+
+        .stamp-discount.filled .discount-text {
+            fill: var(--dark);
+            animation: celebratePulse 0.5s ease-in-out forwards;
+        }
+
+        /* Retrasos de animación */
         .stamp-cup.filled:nth-child(1) { animation-delay: 0ms; }
         .stamp-cup.filled:nth-child(2) { animation-delay: 50ms; }
-        .stamp-cup.filled:nth-child(3) { animation-delay: 100ms; }
+        .stamp-discount.filled:nth-child(3) { animation-delay: 100ms; }
         .stamp-cup.filled:nth-child(4) { animation-delay: 150ms; }
-        .stamp-cup.filled:nth-child(5) { animation-delay: 200ms; }
+        .stamp-discount.filled:nth-child(5) { animation-delay: 200ms; }
         .stamp-cup.filled:nth-child(6) { animation-delay: 250ms; }
         .stamp-cup.filled:nth-child(7) { animation-delay: 300ms; }
         .stamp-cup.filled:nth-child(8) { animation-delay: 350ms; }
-        .stamp-cup.filled:nth-child(9) { animation-delay: 400ms; }
-        .stamp-cup.filled:nth-child(10) { animation-delay: 450ms; }
 
         .stamps-text {
             text-align: center;
@@ -714,6 +712,7 @@
             .wallet-card { padding: 24px; }
             .stamps-grid { gap: 8px; }
             .stamp-cup { width: 38px; height: 38px; }
+            .stamp-discount { width: 38px; height: 38px; }
             .logo-small { font-size: 24px; }
         }
     </style>
@@ -948,48 +947,56 @@
                 });
             }
 
-            
             renderizarTazas(puntosActuales) {
-    const totalTazas = 8; // Actualizado a 8
-    this.ui.gridSellos.innerHTML = ''; 
+                const totalTazas = 8; // Actualizado a 8
+                this.ui.gridSellos.innerHTML = ''; 
 
-    for (let i = 1; i <= totalTazas; i++) {
-        const contenedorSvg = document.createElement('div');
-        
-        // Si estamos en la posición 3 o 5, insertamos el descuento
-        if (i === 3 || i === 5) {
-            contenedorSvg.innerHTML = this.obtenerSvgDescuento();
-        } else {
-            contenedorSvg.innerHTML = this.obtenerSvgTaza();
-        }
-        
-        const svgElement = contenedorSvg.querySelector('svg'); 
-        
-        if (i <= puntosActuales) {
-            svgElement.classList.add('filled');
-        }
-        this.ui.gridSellos.appendChild(svgElement);
-    }
+                for (let i = 1; i <= totalTazas; i++) {
+                    const contenedorSvg = document.createElement('div');
+                    
+                    // Si estamos en la posición 3 o 5, insertamos el descuento
+                    if (i === 3 || i === 5) {
+                        contenedorSvg.innerHTML = this.obtenerSvgDescuento();
+                    } else {
+                        contenedorSvg.innerHTML = this.obtenerSvgTaza();
+                    }
+                    
+                    const svgElement = contenedorSvg.querySelector('svg'); 
+                    
+                    if (i <= puntosActuales) {
+                        svgElement.classList.add('filled');
+                    }
+                    this.ui.gridSellos.appendChild(svgElement);
+                }
 
-    this.ui.puntos.innerText = puntosActuales;
-    
-    if(puntosActuales >= totalTazas) {
-        this.ui.premio.innerText = "Bebida lista!";
-        this.ui.premio.classList.add('premio-listo');
-    } else {
-        this.ui.premio.innerText = "En progreso";
-        this.ui.premio.classList.remove('premio-listo');
-    }
-}
+                this.ui.puntos.innerText = puntosActuales;
+                
+                if(puntosActuales >= totalTazas) {
+                    this.ui.premio.innerText = "Bebida lista!";
+                    this.ui.premio.classList.add('premio-listo');
+                } else {
+                    this.ui.premio.innerText = "En progreso";
+                    this.ui.premio.classList.remove('premio-listo');
+                }
+            }
 
-// Agrega este nuevo método justo debajo de obtenerSvgTaza()
-obtenerSvgDescuento() {
-    return `
-    <svg class="stamp-discount" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <circle class="discount-border" cx="50" cy="50" r="38" />
-        <text class="discount-text" x="50" y="65" text-anchor="middle">%</text>
-    </svg>`;
-}
+            obtenerSvgDescuento() {
+                return `
+                <svg class="stamp-discount" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="discount-border" cx="50" cy="50" r="38" />
+                    <text class="discount-text" x="50" y="65" text-anchor="middle">%</text>
+                </svg>`;
+            }
+
+            obtenerSvgTaza() {
+                return `
+                <svg class="stamp-cup" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path class="steam-path" d="M38,30 V12 M50,32 V8 M62,30 V16" stroke-linecap="round"/>
+                    <path class="cup-path" d="M20,35 H80 V75 Q80,90 65,90 H35 Q20,90 20,75 Z" />
+                    <path class="coffee-fill" d="M22,37 H78 V73 Q78,88 63,88 H37 Q22,88 22,73 Z" />
+                    <path class="cup-handle" d="M80,45 Q95,45 95,60 T80,75" />
+                </svg>`;
+            }
 
             cerrarSesion() {
                 if (this.unsubscribe) this.unsubscribe(); 
