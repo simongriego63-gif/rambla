@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>beki - Neon Mood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0A0A0A;
+            --card-bg: #141414;
+            --neon-accent: #FF2A5F; /* Rosa/Rojo Neón */
+            --white: #FFFFFF;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg-dark); color: var(--white); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+
+        .neon-card {
+            width: 100%; max-width: 350px; background: var(--card-bg); border-radius: 30px;
+            padding: 30px 25px; border: 2px solid #222; position: relative; overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 42, 95, 0.05);
+        }
+
+        /* Brillo cruzando la tarjeta */
+        .neon-card::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,42,95,0.03), transparent);
+            transform: rotate(45deg); animation: shine 6s infinite linear; pointer-events: none;
+        }
+        @keyframes shine { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .logo { font-weight: 900; font-size: 32px; letter-spacing: -2px; color: var(--white); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .logo span { color: var(--neon-accent); text-shadow: 0 0 15px var(--neon-accent); }
+        .user-id { font-size: 12px; color: #666; font-family: monospace; letter-spacing: 2px; }
+
+        /* Grilla Neón */
+        .neon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 35px; }
+        .neon-slot { width: 100%; aspect-ratio: 1; border-radius: 50%; border: 2px dashed #333; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        
+        .neon-slot.filled { 
+            border-style: solid; border-color: var(--neon-accent); 
+            box-shadow: 0 0 15px var(--neon-accent), inset 0 0 10px var(--neon-accent);
+            background: rgba(255, 42, 95, 0.1); transform: scale(1.05);
+        }
+        .neon-slot svg { width: 50%; height: 50%; fill: #333; transition: 0.3s; }
+        .neon-slot.filled svg { fill: var(--neon-accent); filter: drop-shadow(0 0 5px var(--neon-accent)); }
+
+        /* Deslizador de Canje (Swipe to Redeem) */
+        .swipe-box {
+            width: 100%; height: 60px; background: #000; border-radius: 30px; position: relative;
+            border: 1px solid #333; display: flex; align-items: center; justify-content: center; overflow: hidden;
+            display: none; /* Se muestra con JS */
+        }
+        .swipe-text { position: absolute; z-index: 1; font-weight: 700; font-size: 13px; color: #666; letter-spacing: 1px; pointer-events: none;}
+        
+        /* Input Range trucado como Slider */
+        input[type=range] {
+            -webkit-appearance: none; width: 100%; background: transparent; z-index: 2; height: 60px; position: absolute; margin: 0; outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 52px; height: 52px; border-radius: 50%;
+            background: var(--neon-accent); cursor: pointer; border: 4px solid #000;
+            box-shadow: 0 0 20px var(--neon-accent); transition: background 0.2s;
+        }
+
+        .qr-mini { display: flex; align-items: center; gap: 15px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #222; }
+        .qr-mini img { width: 50px; height: 50px; border-radius: 8px; filter: invert(1); opacity: 0.8;}
+        .qr-info { font-size: 11px; color: #666; line-height: 1.5; }
+
+        #loginOverlay { position: fixed; inset: 0; background: var(--bg-dark); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; }
+        .inp-neon { width: 100%; max-width: 300px; padding: 15px; border-radius: 12px; border: 2px solid #333; background: #000; color: white; margin-bottom: 15px; font-weight: bold;}
+        .btn-neon { width: 100%; max-width: 300px; padding: 15px; border-radius: 12px; background: transparent; color: var(--neon-accent); border: 2px solid var(--neon-accent); text-shadow: 0 0 5px var(--neon-accent); box-shadow: inset 0 0 10px rgba(255,42,95,0.2); font-weight: 900; cursor: pointer;}
+    </style>
+</head>
+<body>
+
+    <div id="loginOverlay">
+        <h1 class="logo" style="margin-bottom: 30px;">beki<span>.</span></h1>
+        <input type="text" id="inNombre" class="inp-neon" placeholder="Tu Nombre">
+        <input type="tel" id="inTel" class="inp-neon" placeholder="WhatsApp">
+        <button class="btn-neon" onclick="iniciarApp()">ENTRAR</button>
+    </div>
+
+    <div class="neon-card" id="mainCard" style="display:none;">
+        <div class="header">
+            <div class="logo">beki<span>.</span></div>
+            <div class="user-id" id="uiNom">...</div>
+        </div>
+
+        <div class="neon-grid" id="gridSlots">
+            </div>
+
+        <div class="swipe-box" id="swipeBox">
+            <div class="swipe-text" id="swipeText">DESLIZÁ PARA 15% OFF</div>
+            <input type="range" min="0" max="100" value="0" id="sliderRedeem">
+        </div>
+
+        <div class="qr-mini">
+            <img id="qrImg" src="" alt="QR">
+            <div class="qr-info">
+                <strong style="color: var(--white);">Módulo Escáner</strong><br>
+                Mostrá este código en caja para iluminar tus puntos.
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const app = initializeApp({
+            apiKey: "AIzaSyCaqJraAXeZ8F4zCd9GUIdNIHhfU7FMzJk",
+            authDomain: "club-cafe-app.firebaseapp.com",
+            databaseURL: "https://club-cafe-app-default-rtdb.firebaseio.com",
+            projectId: "club-cafe-app"
+        });
+        const db = getFirestore(app);
+
+        let puntosGlobal = 0;
+
+        window.iniciarApp = async () => {
+            const nom = document.getElementById('inNombre').value;
+            const tel = document.getElementById('inTel').value.replace(/\D/g,'');
+            if(!nom || tel.length < 8) return alert("Completa los datos");
+
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainCard').style.display = 'block';
+            document.getElementById('qrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${tel}&bgcolor=000000&color=FFFFFF`;
+
+            await setDoc(doc(db, "clientes", tel), { nombre: nom }, { merge: true });
+
+            onSnapshot(doc(db, "clientes", tel), (docSnap) => {
+                if(docSnap.exists()) {
+                    const d = docSnap.data();
+                    document.getElementById('uiNom').innerText = d.nombre.toUpperCase();
+                    puntosGlobal = d.puntos || 0;
+                    dibujarGrid(puntosGlobal);
+                    evaluarPremio(puntosGlobal, d.desc3Usado, d.desc5Usado);
+                }
+            });
+        };
+
+        function dibujarGrid(puntos) {
+            const grid = document.getElementById('gridSlots');
+            grid.innerHTML = '';
+            for(let i=1; i<=8; i++) {
+                const slot = document.createElement('div');
+                slot.className = `neon-slot ${i <= puntos ? 'filled' : ''}`;
+                // Taza minimalista sólida
+                slot.innerHTML = `<svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>`;
+                grid.appendChild(slot);
+            }
+        }
+
+        // Lógica del Slider
+        const slider = document.getElementById('sliderRedeem');
+        const swipeBox = document.getElementById('swipeBox');
+        const swipeText = document.getElementById('swipeText');
+
+        function evaluarPremio(p, desc3, desc5) {
+            slider.value = 0;
+            if (p >= 8) {
+                swipeBox.style.display = 'flex';
+                swipeText.innerText = "DESLIZÁ PARA BEBIDA GRATIS";
+                slider.style.setProperty('--neon-accent', '#00FF88'); // Verde neón para premio mayor
+            } else if (p >= 5 && !desc5) {
+                swipeBox.style.display = 'flex';
+                swipeText.innerText = "DESLIZÁ PARA 25% OFF";
+            } else if (p >= 3 && !desc3) {
+                swipeBox.style.display = 'flex';
+                swipeText.innerText = "DESLIZÁ PARA 15% OFF";
+            } else {
+                swipeBox.style.display = 'none';
+            }
+        }
+
+        // Resorte del slider
+        slider.addEventListener('touchend', (e) => {
+            if (slider.value < 95) {
+                slider.value = 0; // Vuelve al inicio si no llegó al final
+            }
+        });
+
+        slider.addEventListener('change', (e) => {
+            if (slider.value >= 95) {
+                alert("¡Premio Canjeado en el sistema local! (Avisale al cajero)");
+                slider.value = 0;
+                swipeBox.style.display = 'none'; // Lo ocultamos temporalmente
+            } else {
+                slider.value = 0;
+            }
+        });
+    </script>
+</body>
+</html>
