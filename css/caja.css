@@ -71,7 +71,9 @@ body {
 
 .estado-sellos-texto { font-size: 12px; color: var(--dark); opacity: 0.8; margin-bottom: 5px; font-weight: 700; text-transform: uppercase; transition: all 0.3s ease;}
 .estado-sellos-numero { color: var(--accent); font-weight: 900; font-size: 52px; line-height: 1; font-family: 'Montserrat', sans-serif; transition: all 0.3s ease;}
-.estado-sellos-numero span { font-size: 24px; color: var(--dark); opacity: 0.5; font-weight: 800; transition: all 0.3s ease;}
+
+/* MODIFICADO: Agregado margen izquierdo para separar la barra del número principal */
+.estado-sellos-numero span { font-size: 24px; color: var(--dark); opacity: 0.5; font-weight: 800; transition: all 0.3s ease; margin-left: 8px; }
 
 /* EFECTO 8/8 COMPLETADO */
 .estado-sellos-container.completado {
@@ -88,9 +90,12 @@ body {
 .estado-sellos-container.completado .estado-sellos-numero {
     color: var(--dark);
 }
+
+/* MODIFICADO: Mantener margen izquierdo en estado completado */
 .estado-sellos-container.completado .estado-sellos-numero span {
     color: var(--accent);
     opacity: 0.8;
+    margin-left: 8px;
 }
 
 /* BOTONES */
