@@ -22,7 +22,6 @@ body {
     position: relative;
 }
 
-/* === FONDO AURORA ANIMADO === */
 .aurora-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--bg-main); }
 .aurora-blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: floatAurora 20s ease-in-out infinite; }
 .aurora-blob:nth-child(1) { width: 400px; height: 400px; background: var(--aurora-1); top: -100px; left: -100px; animation-delay: 0s; }
@@ -36,10 +35,9 @@ body {
     75% { transform: translate(20px, 10px) scale(1.02); }
 }
 
-/* === CONTENEDOR PRINCIPAL === */
 .main-container { position: relative; z-index: 1; width: 100%; max-width: 520px; }
 
-/* === TARJETA BASE HORIZONTAL === */
+/* === TARJETA MÁS ALTA === */
 .wallet-card.horizontal {
     background: var(--bg-card);
     border-radius: 24px;
@@ -50,20 +48,18 @@ body {
     flex-direction: row;
     align-items: stretch;
     gap: 16px;
-    min-height: 260px;
+    min-height: 360px; /* Engordada verticalmente */
 }
 
 .card-column-left { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
 .card-column-right { width: 130px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; border-left: 2px dashed var(--dark-soft); padding-left: 16px; }
 
-/* === SKELETON LOADING HORIZONTAL === */
 #pantallaSkeleton { display: none; width: 100%; }
 .skeleton-block, .skeleton-circle { background: linear-gradient(90deg, rgba(74, 14, 23, 0.05) 25%, rgba(74, 14, 23, 0.12) 50%, rgba(74, 14, 23, 0.05) 75%); background-size: 200% 100%; animation: skeletonShimmer 1.5s infinite linear; }
 .skeleton-block { border-radius: 12px; }
-.skeleton-circle { width: 40px; height: 40px; border-radius: 50%; }
+.skeleton-circle { width: 38px; height: 38px; border-radius: 50%; }
 @keyframes skeletonShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-/* === PANTALLA REGISTRO === */
 #pantallaRegistro { display: none; text-align: center; }
 .registro-card { background: var(--bg-card); border-radius: 24px; padding: 48px 32px; border: 3px solid var(--dark); box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15); }
 .logo-animado { display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 auto 12px; animation: pulseGlow 4s ease-in-out infinite; }
@@ -77,53 +73,45 @@ body {
 .btn-primary { width: 100%; padding: 20px 32px; border-radius: 16px; border: 2px solid var(--accent); background: var(--accent); color: var(--white); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(240, 90, 43, 0.25); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(240, 90, 43, 0.35); }
 
-/* === PANTALLA TARJETA === */
 #pantallaTarjeta { display: none; animation: fadeIn 0.5s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .texto-girar { text-align: center; font-size: 13px; color: var(--dark); opacity: 0.7; margin-bottom: 20px; font-weight: 600; animation: breathe 3s ease-in-out infinite; }
 @keyframes breathe { 0%, 100% { opacity: 0.6; } 50% { opacity: 0.9; } }
 
-/* === FLIP CARD Y RESPONSIVE === */
 .flip-container { perspective: 1500px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .flip-container.flipped .flipper { transform: rotateY(180deg); }
 .flipper { display: grid; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
 .front, .back { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 24px; }
 .front { transform: rotateY(0deg); }
-.back { transform: rotateY(180deg); padding: 0; min-height: 260px; background: transparent; border: none; box-shadow: none; }
+.back { transform: rotateY(180deg); padding: 0; min-height: 360px; background: transparent; border: none; box-shadow: none; }
 
 @media (max-width: 480px) { .flip-container { transform: scale(0.85); transform-origin: top center; margin-bottom: -30px;} }
 @media (max-width: 380px) { .flip-container { transform: scale(0.75); transform-origin: top center; margin-bottom: -50px;} }
 
-/* === CABECERA Y TEXTOS === */
 .card-header { margin-bottom: 12px; }
 .logo-small { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 26px; line-height: 0.9; color: var(--accent); letter-spacing: -1px; }
 .user-info { text-align: center; width: 100%; }
 .user-nickname { font-size: 15px; font-weight: 800; color: var(--accent); margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 .user-tel-label { font-size: 11px; color: var(--dark); opacity: 0.7; font-weight: 600; display: block; margin-top: 0; }
 
-/* === STAMPS/SELLOS (Vaso y Panadería) === */
 .stamps-container { background: rgba(255, 255, 255, 0.4); border-radius: 20px; padding: 16px; margin-bottom: 15px; border: 2px dashed var(--dark-soft); }
 .stamps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px; justify-items: center; }
 
-.stamp-drink, .stamp-bakery {
-    width: 38px;
-    height: 38px;
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+/* === LOS NUEVOS SVG (Grano, Rayo y Panadería) === */
+.stamp-bean, .stamp-bakery, .stamp-bolt { width: 38px; height: 38px; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-/* Estado Vacío */
-.stamp-drink .drink-bg { fill: none; }
-.stamp-drink .drink-main { fill: var(--dark-soft); transition: all 0.4s ease; }
-.stamp-bakery .bakery-main { fill: var(--dark-soft); transition: all 0.4s ease; }
+.stamp-bean .bean-body, .stamp-bean .bean-crease { fill: none; stroke: var(--dark-soft); stroke-width: 1; transition: all 0.4s ease; }
+.stamp-bakery .bakery-main, .stamp-bolt .bolt-main { fill: var(--dark-soft); transition: all 0.4s ease; }
 
-/* Estado Lleno: Animación de "Pop" */
-.stamp-drink.filled, .stamp-bakery.filled {
+.stamp-bean.filled, .stamp-bakery.filled, .stamp-bolt.filled {
     animation: popIcon 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     filter: drop-shadow(0 4px 5px rgba(74, 14, 23, 0.2));
 }
 
-.stamp-drink.filled .drink-main { fill: var(--dark); } /* El vasito se pone marrón */
-.stamp-bakery.filled .bakery-main { fill: var(--accent); } /* La medialuna se pone naranja */
+.stamp-bean.filled .bean-body { fill: var(--accent); stroke: var(--dark); }
+.stamp-bean.filled .bean-crease { stroke: var(--dark); }
+.stamp-bakery.filled .bakery-main { fill: var(--accent); }
+.stamp-bolt.filled .bolt-main { fill: var(--accent); } /* Rayo en naranja también */
 
 @keyframes popIcon {
     0% { transform: scale(0.8); opacity: 0.5; }
@@ -131,13 +119,17 @@ body {
     100% { transform: scale(1.1); opacity: 1; }
 }
 
-/* Estado usado (Para evitar avivadas) */
-.stamp-drink.used, .stamp-bakery.used { opacity: 0.25 !important; filter: grayscale(100%) contrast(70%) !important; transform: scale(0.95) !important; box-shadow: none !important; }
-
+.stamp-bean.used, .stamp-bakery.used, .stamp-bolt.used { opacity: 0.25 !important; filter: grayscale(100%) contrast(70%) !important; transform: scale(0.95) !important; box-shadow: none !important; }
 .stamps-text { text-align: center; font-size: 10px; color: var(--dark); opacity: 0.8; margin: 0; font-weight: 600; }
 
-/* === INFO Y QR === */
-.info-row { display: flex; justify-content: space-between; align-items: center; padding: 0 4px; margin-bottom: 0; }
+/* === APARTADO DE REFERENCIAS === */
+.references-box { background: rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 12px 14px; margin-bottom: 15px; border: 1px solid rgba(74, 14, 23, 0.1); display: flex; flex-direction: column; gap: 8px; }
+.ref-item { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; color: var(--dark); }
+.ref-icon-badge { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--bg-card); border-radius: 6px; border: 1.5px solid var(--dark); }
+.ref-icon-badge svg { width: 16px; height: 16px; }
+.ref-text-status { margin-left: auto; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.6; }
+
+.info-row { display: flex; justify-content: space-between; align-items: center; padding: 0 4px; margin-bottom: 0; margin-top: auto;}
 .info-label { font-size: 11px; color: var(--dark); opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 700; }
 .info-value { font-weight: 800; font-size: 13px; color: var(--dark); }
 .info-value-points { font-size: 22px; font-weight: 900; color: var(--accent); font-family: 'Montserrat', sans-serif; }
@@ -147,13 +139,11 @@ body {
 .qr-box img { display: block; width: 85px; height: 85px; }
 .user-id { font-size: 9px; color: var(--dark); opacity: 0.6; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; text-align: center; margin-top: 5px;}
 
-/* === DORSO TARJETA === */
 .back-logo-animado { display: flex; flex-direction: column; justify-content: center; align-items: center; animation: floatCard 6s ease-in-out infinite; }
 @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 .back-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--accent); font-size: 50px; letter-spacing: -2px; margin: 0; line-height: 1; }
 .back-subtitle { font-size: 14px; color: var(--dark); font-weight: 800; letter-spacing: 6px; text-transform: uppercase; margin-top: 8px; }
 
-/* === PARTÍCULAS Y MODALES === */
 .particle { position: fixed; width: 8px; height: 8px; background-color: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; }
 .btn-cerrar { margin-top: 32px; background: none; color: var(--dark); opacity: 0.6; border: none; width: 100%; font-weight: 700; cursor: pointer; padding: 16px; border-radius: 14px; transition: all 0.3s ease; }
 .btn-cerrar:hover { opacity: 1; background: var(--dark-soft); }
