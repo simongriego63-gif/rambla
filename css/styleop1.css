@@ -46,7 +46,6 @@ body {
     box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15);
 }
 
-/* === SKELETON LOADING === */
 #pantallaSkeleton { display: none; width: 100%; }
 .skeleton-block, .skeleton-circle { background: linear-gradient(90deg, rgba(74, 14, 23, 0.05) 25%, rgba(74, 14, 23, 0.12) 50%, rgba(74, 14, 23, 0.05) 75%); background-size: 200% 100%; animation: skeletonShimmer 1.5s infinite linear; }
 .skeleton-block { border-radius: 12px; }
@@ -55,7 +54,6 @@ body {
 .card-header-skeleton { display: flex; justify-content: space-between; margin-bottom: 28px; }
 .stamps-skeleton { background: rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 24px 20px; margin-bottom: 16px; border: 2px dashed rgba(74, 14, 23, 0.1); }
 
-/* === PANTALLA REGISTRO === */
 #pantallaRegistro { display: none; text-align: center; }
 .registro-card { background: var(--bg-card); border-radius: 24px; padding: 48px 32px; border: 3px solid var(--dark); box-shadow: 8px 8px 0px rgba(74, 14, 23, 0.15); }
 .logo-animado { display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 auto 12px; animation: pulseGlow 4s ease-in-out infinite; }
@@ -69,7 +67,6 @@ body {
 .btn-primary { width: 100%; padding: 20px 32px; border-radius: 16px; border: 2px solid var(--accent); background: var(--accent); color: var(--white); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(240, 90, 43, 0.25); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(240, 90, 43, 0.35); }
 
-/* === PANTALLA TARJETA Y FLIP === */
 #pantallaTarjeta { display: none; animation: fadeIn 0.5s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .texto-girar { text-align: center; font-size: 13px; color: var(--dark); opacity: 0.7; margin-bottom: 20px; font-weight: 600; animation: breathe 3s ease-in-out infinite; }
@@ -82,7 +79,6 @@ body {
 .front { transform: rotateY(0deg); }
 .back { transform: rotateY(180deg); }
 
-/* === CABECERA === */
 .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
 .logo-small { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 32px; line-height: 0.9; color: var(--accent); letter-spacing: -1px; }
 .user-info { text-align: right; max-width: 50%;}
@@ -93,11 +89,11 @@ body {
 .stamps-container { background: rgba(255, 255, 255, 0.4); border-radius: 20px; padding: 24px 20px; margin-bottom: 16px; border: 2px dashed var(--dark-soft); }
 .stamps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; justify-items: center; }
 
-/* Control de tamaño estricto para evitar el bug de SVG gigante */
+/* Control de tamaño estricto para evitar bugs */
 .stamp-bean, .stamp-bakery, .stamp-bolt { width: 44px; height: 44px; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
 /* Estados vacíos */
-.stamp-bean .bean-body, .stamp-bean .bean-crease { fill: none; stroke: var(--dark-soft); transition: all 0.4s ease; }
+.stamp-bean .bean-body, .stamp-bean .bean-crease { fill: none; stroke: var(--dark-soft); stroke-width: 1px; transition: all 0.4s ease; }
 .stamp-bakery .bakery-main { fill: var(--dark-soft); transition: all 0.4s ease; }
 .stamp-bolt .bolt-main { fill: var(--dark-soft); transition: all 0.4s ease; }
 
@@ -107,8 +103,8 @@ body {
     filter: drop-shadow(0 4px 5px rgba(74, 14, 23, 0.2));
 }
 
-.stamp-bean.filled .bean-body { fill: var(--accent); stroke: var(--dark); }
-.stamp-bean.filled .bean-crease { stroke: var(--dark); }
+.stamp-bean.filled .bean-body { fill: var(--accent); stroke: var(--dark); stroke-width: 1px; }
+.stamp-bean.filled .bean-crease { stroke: var(--dark); stroke-width: 1.5px; }
 .stamp-bakery.filled .bakery-main { fill: var(--accent); }
 .stamp-bolt.filled .bolt-main { fill: var(--accent); }
 
@@ -125,7 +121,7 @@ body {
 .references-box { background: rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 16px; margin-bottom: 24px; border: 1px solid rgba(74, 14, 23, 0.1); display: flex; flex-direction: column; gap: 12px; }
 .ref-item { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 700; color: var(--dark); }
 
-/* Corrección de tamaño estricta para mini iconos */
+/* Corrección estricta para mini iconos */
 .ref-icon-badge { width: 30px; height: 30px; min-width: 30px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--bg-card); border-radius: 8px; border: 2px solid var(--dark); }
 .ref-icon-badge svg { width: 16px !important; height: 16px !important; display: block; }
 
