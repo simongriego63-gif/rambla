@@ -1,7 +1,7 @@
 import { db } from './firebase-config.js';
 import { doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-class BekiAppPremium {
+class BekiAppDark {
     constructor() {
         this.db = db;
         this.unsubscribe = null;
@@ -21,7 +21,6 @@ class BekiAppPremium {
             puntos: document.getElementById('displayPuntos'),
             premio: document.getElementById('displayPremio'),
             progressFill: document.getElementById('progressFill'),
-            progressGlow: document.getElementById('progressGlow'),
             modalAlerta: document.getElementById('modalAlertaCustom'),
             textoAlerta: document.getElementById('textoAlertaCustom'),
             status3: document.getElementById('refStatus3'),
@@ -121,8 +120,8 @@ class BekiAppPremium {
     }
 
     abrirTarjeta(celular) {
-        // QR in black and white
-        this.ui.qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${celular}&bgcolor=ffffff&color=0a0a0a`;
+        // QR inverted for dark theme (black bg, white qr)
+        this.ui.qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${celular}&bgcolor=ffffff&color=000000`;
         this.ui.telLabel.innerText = `******${celular.slice(-4)}`;
 
         this.unsubscribe = onSnapshot(doc(this.db, "clientes", celular), (docSnap) => {
@@ -135,7 +134,7 @@ class BekiAppPremium {
                     setTimeout(() => {
                         this.cambiarPantalla('tarjeta');
                         this.renderizarTazas(datos);
-                    }, 500);
+                    }, 400);
                 } else {
                     this.renderizarTazas(datos);
                 }
@@ -180,12 +179,14 @@ class BekiAppPremium {
             const svgElement = contenedorSvg.querySelector('svg');
 
             if (i <= puntosActuales) {
-                const delay = this.primeraCarga ? i * 60 : 0;
+                const delay = this.primeraCarga ? i * 80 : 0;
                 setTimeout(() => {
                     svgElement.classList.add('filled');
 
                     if (animarNuevos && i > puntosPrevios) {
-                        setTimeout(() => this.dispararParticulas(svgElement), 200);
+                        svgElement.classList.add('pop');
+                        setTimeout(() => svgElement.classList.remove('pop'), 400);
+                        setTimeout(() => this.dispararParticulas(svgElement), 150);
                     }
                 }, delay);
             }
@@ -205,14 +206,14 @@ class BekiAppPremium {
 
         // Update status
         if (puntosActuales >= totalTazas) {
-            this.ui.premio.innerText = "Bebida lista";
+            this.ui.premio.innerText = "READY";
             this.ui.premio.classList.add('premio-listo');
             
             if (animarNuevos && puntosActuales === totalTazas) {
                 this.celebrar();
             }
         } else {
-            this.ui.premio.innerText = "En progreso";
+            this.ui.premio.innerText = "ACTIVE";
             this.ui.premio.classList.remove('premio-listo');
         }
 
@@ -233,31 +234,31 @@ class BekiAppPremium {
         // Reward 3
         if (desc3Usado) {
             reward3.classList.add('completed');
-            this.ui.status3.innerText = 'Canjeado';
+            this.ui.status3.innerText = 'USED';
         } else if (puntos >= 3) {
             reward3.classList.add('active');
-            this.ui.status3.innerText = 'Disponible';
+            this.ui.status3.innerText = 'UNLOCKED';
         } else {
-            this.ui.status3.innerText = `${3 - puntos} sellos`;
+            this.ui.status3.innerText = `${3 - puntos} LEFT`;
         }
 
         // Reward 5
         if (desc5Usado) {
             reward5.classList.add('completed');
-            this.ui.status5.innerText = 'Canjeado';
+            this.ui.status5.innerText = 'USED';
         } else if (puntos >= 5) {
             reward5.classList.add('active');
-            this.ui.status5.innerText = 'Disponible';
+            this.ui.status5.innerText = 'UNLOCKED';
         } else {
-            this.ui.status5.innerText = `${5 - puntos} sellos`;
+            this.ui.status5.innerText = `${5 - puntos} LEFT`;
         }
 
         // Reward 8
         if (puntos >= 8) {
             reward8.classList.add('active');
-            this.ui.status8.innerText = 'Disponible';
+            this.ui.status8.innerText = 'UNLOCKED';
         } else {
-            this.ui.status8.innerText = `${8 - puntos} sellos`;
+            this.ui.status8.innerText = `${8 - puntos} LEFT`;
         }
     }
 
@@ -266,13 +267,13 @@ class BekiAppPremium {
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
 
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 10; i++) {
             const p = document.createElement('div');
-            p.className = `particle ${Math.random() > 0.5 ? 'light' : ''}`;
+            p.className = `particle ${Math.random() > 0.5 ? 'dim' : ''}`;
             document.body.appendChild(p);
 
-            const angle = (Math.PI * 2 * i) / 8;
-            const velocity = 20 + Math.random() * 25;
+            const angle = (Math.PI * 2 * i) / 10;
+            const velocity = 30 + Math.random() * 40;
             const tx = Math.cos(angle) * velocity;
             const ty = Math.sin(angle) * velocity;
 
@@ -283,36 +284,36 @@ class BekiAppPremium {
                 { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
                 { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`, opacity: 0 }
             ], {
-                duration: 600,
-                easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                duration: 500,
+                easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
                 fill: 'forwards'
             });
 
-            setTimeout(() => p.remove(), 700);
+            setTimeout(() => p.remove(), 600);
         }
     }
 
     celebrar() {
         const container = this.ui.celebrationContainer;
-        const colors = ['', 'gray', 'light'];
+        const types = ['', 'gray', 'dark'];
 
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 50; i++) {
             const confetti = document.createElement('div');
-            confetti.className = `confetti ${colors[Math.floor(Math.random() * colors.length)]}`;
+            confetti.className = `confetti ${types[Math.floor(Math.random() * types.length)]}`;
 
             const startX = Math.random() * window.innerWidth;
             const startY = -20;
-            const endX = startX + (Math.random() - 0.5) * 200;
+            const endX = startX + (Math.random() - 0.5) * 300;
             const endY = window.innerHeight + 20;
             const rotation = Math.random() * 720 - 360;
-            const duration = 2000 + Math.random() * 1000;
-            const delay = Math.random() * 500;
+            const duration = 1500 + Math.random() * 800;
+            const delay = Math.random() * 400;
 
             confetti.style.left = startX + 'px';
             confetti.style.top = startY + 'px';
-            confetti.style.width = (4 + Math.random() * 6) + 'px';
-            confetti.style.height = (4 + Math.random() * 6) + 'px';
-            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            confetti.style.width = (3 + Math.random() * 5) + 'px';
+            confetti.style.height = (3 + Math.random() * 5) + 'px';
+            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '1px';
 
             container.appendChild(confetti);
 
@@ -338,22 +339,22 @@ class BekiAppPremium {
 
     obtenerSvgDescuento() {
         return `
-        <svg class="stamp-discount" viewBox="0 0 44 60" xmlns="http://www.w3.org/2000/svg">
-            <circle class="discount-circle" cx="22" cy="35" r="18" />
-            <text class="discount-symbol" x="22" y="41" text-anchor="middle">%</text>
+        <svg class="stamp-discount" viewBox="0 0 48 64" xmlns="http://www.w3.org/2000/svg">
+            <rect class="discount-box" x="6" y="14" width="36" height="36" rx="6" />
+            <text class="discount-symbol" x="24" y="38" text-anchor="middle">%</text>
         </svg>`;
     }
 
     obtenerSvgTaza() {
         return `
-        <svg class="stamp-cup" viewBox="0 0 44 60" xmlns="http://www.w3.org/2000/svg">
-            <path class="steam-line" d="M16,12 Q16,8 18,6" />
-            <path class="steam-line" d="M22,10 Q22,5 24,2" />
-            <path class="steam-line" d="M28,12 Q28,8 30,6" />
+        <svg class="stamp-cup" viewBox="0 0 48 64" xmlns="http://www.w3.org/2000/svg">
+            <path class="cup-steam" d="M16,10 Q16,4 18,2" />
+            <path class="cup-steam" d="M24,8 Q24,2 26,0" />
+            <path class="cup-steam" d="M32,10 Q32,4 34,2" />
             
-            <path class="cup-body" d="M8,18 L10,50 Q10,56 16,56 L28,56 Q34,56 34,50 L36,18 Z" />
-            <path class="cup-fill" d="M10,22 L12,48 Q12,52 16,52 L28,52 Q32,52 32,48 L34,22 Z" />
-            <path class="cup-handle" d="M36,24 Q44,24 44,34 Q44,44 36,44" />
+            <path class="cup-outline" d="M8,16 L8,48 Q8,56 16,56 L32,56 Q40,56 40,48 L40,16 Z" />
+            <path class="cup-fill" d="M10,18 L10,46 Q10,54 16,54 L32,54 Q38,54 38,46 L38,18 Z" />
+            <path class="cup-outline" d="M40,22 Q48,22 48,32 Q48,42 40,42" />
         </svg>`;
     }
 
@@ -365,7 +366,7 @@ class BekiAppPremium {
 }
 
 window.onload = () => {
-    new BekiAppPremium();
+    new BekiAppDark();
 };
 
 // --- PWA INSTALLATION LOGIC ---

@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>beki - CAFE | Premium</title>
+    <title>beki - CAFE | Dark</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#000000">
     <link rel="apple-touch-icon" href="icon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="css/styleop3.css">
 </head>
 <body>
 
-    <div class="grain-overlay"></div>
+    <div class="grid-bg"></div>
+    <div class="scan-line"></div>
 
     <div id="modalAlertaCustom" class="custom-modal-overlay">
         <div class="custom-modal-box">
+            <div class="modal-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 8v4M12 16h.01"/>
+                </svg>
+            </div>
             <div id="textoAlertaCustom" class="custom-modal-text">Mensaje de error</div>
-            <button id="btnCerrarAlerta" class="btn-modal-ok">Entendido</button>
+            <button id="btnCerrarAlerta" class="btn-modal-ok">ENTENDIDO</button>
         </div>
     </div>
 
@@ -43,44 +50,49 @@
                     </div>
                 </div>
                 <div class="skeleton-block" style="width: 100%; height: 80px; margin-bottom: 24px;"></div>
-                <div class="skeleton-block" style="width: 120px; height: 120px; margin: 0 auto; border-radius: 24px;"></div>
+                <div class="skeleton-block" style="width: 120px; height: 120px; margin: 0 auto;"></div>
             </div>
         </div>
 
         <div id="pantallaRegistro">
             <div class="registro-card">
                 <div class="logo-container">
-                    <div class="logo-mark">
-                        <span class="logo-letter">b</span>
-                    </div>
-                    <div class="logo-wordmark">
-                        <span class="logo-name">beki</span>
-                        <span class="logo-divider"></span>
-                        <span class="logo-tagline">cafe</span>
+                    <div class="logo-glitch" data-text="beki">beki</div>
+                    <div class="logo-tagline">
+                        <span class="tag-line"></span>
+                        <span class="tag-text">CAFE REWARDS</span>
+                        <span class="tag-line"></span>
                     </div>
                 </div>
                 
                 <div class="form-section">
                     <div class="input-group">
-                        <label class="input-label">Nombre</label>
-                        <input type="text" id="inputNombre" class="input-box" placeholder="Tu nombre" required>
-                        <div class="input-line"></div>
+                        <label class="input-label">
+                            <span class="label-icon">//</span> NOMBRE
+                        </label>
+                        <input type="text" id="inputNombre" class="input-box" placeholder="Ingresa tu nombre" required>
+                        <div class="input-glow"></div>
                     </div>
                     
                     <div class="input-group">
-                        <label class="input-label">WhatsApp</label>
+                        <label class="input-label">
+                            <span class="label-icon">//</span> WHATSAPP
+                        </label>
                         <input type="tel" id="inputCelular" class="input-box" placeholder="Tu numero" required>
-                        <div class="input-line"></div>
+                        <div class="input-glow"></div>
                     </div>
                 </div>
                 
                 <button class="btn-primary" id="btnCrearTarjeta">
-                    <span>Continuar</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
+                    <span class="btn-text">INICIAR</span>
+                    <span class="btn-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </span>
+                    <div class="btn-shine"></div>
                 </button>
-                <button id="btnInstalarApp">Agregar a pantalla de inicio</button>
+                <button id="btnInstalarApp">+ AGREGAR A INICIO</button>
             </div>
         </div>
 
@@ -91,30 +103,40 @@
                     
                     <div class="card-face card-front">
                         <div class="wallet-card">
+                            <div class="card-corner tl"></div>
+                            <div class="card-corner tr"></div>
+                            <div class="card-corner bl"></div>
+                            <div class="card-corner br"></div>
+                            
                             <div class="card-header">
                                 <div class="brand-section">
-                                    <div class="mini-logo">b</div>
+                                    <div class="brand-logo">
+                                        <span class="logo-char">B</span>
+                                        <div class="logo-pulse"></div>
+                                    </div>
                                     <div class="brand-text">
-                                        <span class="brand-name">beki</span>
-                                        <span class="brand-sub">cafe</span>
+                                        <span class="brand-name">BEKI</span>
+                                        <span class="brand-sub">REWARDS SYSTEM</span>
                                     </div>
                                 </div>
                                 <button class="flip-trigger" id="btnFlipToBack" aria-label="Ver informacion">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <path d="M12 16v-4M12 8h.01"/>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M12 5v14M5 12h14"/>
                                     </svg>
                                 </button>
                             </div>
 
                             <div class="progress-section">
                                 <div class="progress-header">
-                                    <span class="progress-label">Tu progreso</span>
-                                    <span class="progress-count"><span id="displayPuntos">0</span> de 8</span>
+                                    <span class="progress-label">PROGRESO</span>
+                                    <span class="progress-count"><span id="displayPuntos" class="mono">0</span><span class="progress-total">/8</span></span>
                                 </div>
                                 <div class="progress-bar">
                                     <div class="progress-fill" id="progressFill"></div>
-                                    <div class="progress-glow" id="progressGlow"></div>
+                                    <div class="progress-segments">
+                                        <span></span><span></span><span></span><span></span>
+                                        <span></span><span></span><span></span>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -124,51 +146,62 @@
 
                             <div class="rewards-section">
                                 <div class="reward-item" data-reward="3">
-                                    <div class="reward-marker">3</div>
+                                    <div class="reward-marker">03</div>
                                     <div class="reward-info">
-                                        <span class="reward-title">15% descuento</span>
-                                        <span class="reward-status" id="refStatus3"></span>
+                                        <span class="reward-title">15% OFF</span>
+                                        <span class="reward-status" id="refStatus3">-</span>
                                     </div>
+                                    <div class="reward-indicator"></div>
                                 </div>
                                 <div class="reward-item" data-reward="5">
-                                    <div class="reward-marker">5</div>
+                                    <div class="reward-marker">05</div>
                                     <div class="reward-info">
-                                        <span class="reward-title">25% descuento</span>
-                                        <span class="reward-status" id="refStatus5"></span>
+                                        <span class="reward-title">25% OFF</span>
+                                        <span class="reward-status" id="refStatus5">-</span>
                                     </div>
+                                    <div class="reward-indicator"></div>
                                 </div>
                                 <div class="reward-item reward-final" data-reward="8">
-                                    <div class="reward-marker">8</div>
+                                    <div class="reward-marker">08</div>
                                     <div class="reward-info">
-                                        <span class="reward-title">Bebida gratis</span>
-                                        <span class="reward-status" id="refStatus8"></span>
+                                        <span class="reward-title">FREE DRINK</span>
+                                        <span class="reward-status" id="refStatus8">-</span>
                                     </div>
+                                    <div class="reward-indicator"></div>
                                 </div>
                             </div>
                             
                             <div class="status-bar">
-                                <span class="status-label">Estado</span>
-                                <span class="status-value" id="displayPremio">En progreso</span>
+                                <div class="status-dot"></div>
+                                <span class="status-label">STATUS:</span>
+                                <span class="status-value" id="displayPremio">ACTIVE</span>
                             </div>
                         </div>
                     </div>
                     
                     <div class="card-face card-back">
                         <div class="wallet-card back-content">
+                            <div class="card-corner tl"></div>
+                            <div class="card-corner tr"></div>
+                            <div class="card-corner bl"></div>
+                            <div class="card-corner br"></div>
+                            
                             <div class="back-header">
                                 <button class="flip-trigger" id="btnFlipToFront" aria-label="Volver">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                                     </svg>
                                 </button>
-                                <span class="back-title">Tu tarjeta</span>
+                                <span class="back-title">// USER DATA</span>
                             </div>
 
                             <div class="user-profile">
                                 <div class="user-avatar">
                                     <span id="userInitial">B</span>
+                                    <div class="avatar-ring"></div>
                                 </div>
                                 <div class="user-details">
+                                    <span class="user-label">USUARIO</span>
                                     <span class="user-name" id="displayNombre">...</span>
                                     <span class="user-phone" id="displayTelLabel">******0000</span>
                                 </div>
@@ -176,16 +209,21 @@
 
                             <div class="qr-section">
                                 <div class="qr-frame">
-                                    <div class="qr-corner tl"></div>
-                                    <div class="qr-corner tr"></div>
-                                    <div class="qr-corner bl"></div>
-                                    <div class="qr-corner br"></div>
+                                    <div class="qr-corners">
+                                        <span></span><span></span><span></span><span></span>
+                                    </div>
                                     <img id="qrImage" src="" alt="QR Cliente">
+                                    <div class="qr-scan-line"></div>
                                 </div>
-                                <span class="qr-label">Muestra este codigo para sumar sellos</span>
+                                <span class="qr-label">ESCANEA PARA SUMAR SELLOS</span>
                             </div>
 
-                            <button id="btnCerrarSesion" class="btn-logout">Cerrar sesion</button>
+                            <button id="btnCerrarSesion" class="btn-logout">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+                                </svg>
+                                CERRAR SESION
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -200,3 +238,5 @@
     
 </body>
 </html>
+</content>
+<parameter name="taskNameActive">Writing op3.html
