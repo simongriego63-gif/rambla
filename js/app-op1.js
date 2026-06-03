@@ -1,7 +1,7 @@
 import { db } from './firebase-config.js';
 import { doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-class BekiApp {
+class BekiAppOp1 {
     constructor() {
         this.db = db;
         this.unsubscribe = null;
@@ -18,12 +18,16 @@ class BekiApp {
             gridSellos: document.getElementById('gridSellos'),
             puntos: document.getElementById('displayPuntos'),
             premio: document.getElementById('displayPremio'),
+            progressFill: document.getElementById('progressFill'),
             modalAlerta: document.getElementById('modalAlertaCustom'),
             textoAlerta: document.getElementById('textoAlertaCustom'),
             status3: document.getElementById('refStatus3'),
-            status5: document.getElementById('refStatus5')
+            status5: document.getElementById('refStatus5'),
+            confettiContainer: document.getElementById('confettiContainer')
         };
 
+        this.particleColors = ['#ff6b35', '#ffd23f', '#a855f7', '#22c55e', '#ffffff'];
+        
         this.vincularEventos();
         this.iniciar();
     }
@@ -44,7 +48,7 @@ class BekiApp {
     iniciar() {
         const celularLocal = localStorage.getItem('miTarjetaCafeTEL');
         if (celularLocal) {
-            this.cambiarPantalla('skeleton'); 
+            this.cambiarPantalla('skeleton');
             this.abrirTarjeta(celularLocal);
         } else {
             this.cambiarPantalla('registro');
@@ -67,10 +71,10 @@ class BekiApp {
         const nombre = this.formatearNombre(nombreIngresado);
         let celular = document.getElementById('inputCelular').value.trim();
 
-        if(!nombre || !celular) return this.mostrarAlerta("Por favor completa tu nombre y numero.");
-        
-        celular = celular.replace(/\D/g,''); 
-        if(celular.length < 8) return this.mostrarAlerta("Número demasiado corto.");
+        if (!nombre || !celular) return this.mostrarAlerta("Por favor completa tu nombre y numero.");
+
+        celular = celular.replace(/\D/g, '');
+        if (celular.length < 8) return this.mostrarAlerta("Numero demasiado corto.");
 
         this.cambiarPantalla('skeleton');
 
@@ -79,8 +83,8 @@ class BekiApp {
             const docSnap = await getDoc(docRef);
 
             if (!docSnap.exists()) {
-                await setDoc(docRef, { 
-                    nombre: nombre, 
+                await setDoc(docRef, {
+                    nombre: nombre,
                     puntos: 0,
                     desc3Usado: false,
                     desc5Usado: false,
@@ -89,26 +93,26 @@ class BekiApp {
             } else {
                 await setDoc(docRef, { nombre: nombre }, { merge: true });
             }
-            
+
             localStorage.setItem('miTarjetaCafeTEL', celular);
             this.abrirTarjeta(celular);
         } catch (e) {
             console.error(e);
-            this.mostrarAlerta("Error de conexión.");
+            this.mostrarAlerta("Error de conexion.");
             this.cambiarPantalla('registro');
         }
     }
 
     abrirTarjeta(celular) {
-        this.ui.qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${celular}&bgcolor=FCD34D&color=4A0E17`;
+        this.ui.qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${celular}&bgcolor=ffffff&color=0a0a0f`;
         this.ui.telLabel.innerText = `******${celular.slice(-4)}`;
 
         this.unsubscribe = onSnapshot(doc(this.db, "clientes", celular), (docSnap) => {
             if (docSnap.exists()) {
                 const datos = docSnap.data();
                 this.ui.nombre.innerText = datos.nombre;
-                
-                if(this.primeraCarga) {
+
+                if (this.primeraCarga) {
                     setTimeout(() => {
                         this.cambiarPantalla('tarjeta');
                         this.renderizarSellos(datos);
@@ -117,7 +121,7 @@ class BekiApp {
                     this.renderizarSellos(datos);
                 }
             } else {
-                this.cerrarSesion(); 
+                this.cerrarSesion();
             }
         });
     }
@@ -126,12 +130,16 @@ class BekiApp {
         const puntosActuales = datos.puntos || 0;
         const desc3Usado = datos.desc3Usado || false;
         const desc5Usado = datos.desc5Usado || false;
-        const totalTazas = 8; 
-        
+        const totalTazas = 8;
+
         const puntosPrevios = this.puntosAnteriores;
         const animarNuevos = !this.primeraCarga && puntosActuales > puntosPrevios;
 
-        this.ui.gridSellos.innerHTML = ''; 
+        // Update progress bar
+        const progressPercent = (puntosActuales / totalTazas) * 100;
+        this.ui.progressFill.style.width = `${progressPercent}%`;
+
+        this.ui.gridSellos.innerHTML = '';
 
         for (let i = 1; i <= totalTazas; i++) {
             const contenedorSvg = document.createElement('div');
@@ -149,45 +157,92 @@ class BekiApp {
             } else {
                 contenedorSvg.innerHTML = this.obtenerSvgGrano();
             }
-            
-            const svgElement = contenedorSvg.querySelector('svg'); 
-            
+
+            const svgElement = contenedorSvg.querySelector('svg');
+
             if (i <= puntosActuales) {
+                const delay = this.primeraCarga ? i * 80 : 50;
                 setTimeout(() => {
                     svgElement.classList.add('filled');
                     if (animarNuevos && i > puntosPrevios) {
-                        setTimeout(() => this.dispararParticulas(svgElement), 150);
+                        setTimeout(() => this.dispararParticulas(svgElement), 200);
                     }
-                }, 50);
+                }, delay);
             }
-            
+
             if (esDescuento && yaFueUsado) {
                 svgElement.classList.add('used');
             }
-            
+
             this.ui.gridSellos.appendChild(svgElement);
         }
 
-        if(this.ui.status3 && this.ui.status5) {
-            this.ui.status3.innerText = desc3Usado ? "Canjeado ✓" : (puntosActuales >= 3 ? "Disponible ✨" : "");
-            this.ui.status3.style.color = desc3Usado ? "var(--dark)" : "var(--accent)";
-            
-            this.ui.status5.innerText = desc5Usado ? "Canjeado ✓" : (puntosActuales >= 5 ? "Disponible ✨" : "");
-            this.ui.status5.style.color = desc5Usado ? "var(--dark)" : "var(--accent)";
-        }
+        // Update benefit cards
+        this.actualizarBeneficios(puntosActuales, desc3Usado, desc5Usado, totalTazas);
 
+        // Update points display
         this.ui.puntos.innerText = puntosActuales;
-        
-        if(puntosActuales >= totalTazas) {
-            this.ui.premio.innerText = "¡Listo!";
-            this.ui.premio.style.color = "var(--accent)";
-        } else {
-            this.ui.premio.innerText = "En progreso";
-            this.ui.premio.style.color = "var(--dark)";
+
+        // Check for completion and trigger confetti
+        if (puntosActuales >= totalTazas && animarNuevos) {
+            setTimeout(() => this.dispararConfetti(), 500);
         }
 
         this.puntosAnteriores = puntosActuales;
         this.primeraCarga = false;
+    }
+
+    actualizarBeneficios(puntos, desc3Usado, desc5Usado, total) {
+        const card3 = document.querySelector('[data-benefit="3"]');
+        const card5 = document.querySelector('[data-benefit="5"]');
+        const card8 = document.querySelector('[data-benefit="8"]');
+
+        // Benefit 3
+        if (card3) {
+            card3.classList.remove('available', 'used');
+            if (desc3Usado) {
+                card3.classList.add('used');
+                this.ui.status3.innerText = 'Canjeado';
+                this.ui.status3.className = 'benefit-status used';
+            } else if (puntos >= 3) {
+                card3.classList.add('available');
+                this.ui.status3.innerText = 'Disponible';
+                this.ui.status3.className = 'benefit-status available';
+            } else {
+                this.ui.status3.innerText = `${3 - puntos} sellos mas`;
+                this.ui.status3.className = 'benefit-status';
+            }
+        }
+
+        // Benefit 5
+        if (card5) {
+            card5.classList.remove('available', 'used');
+            if (desc5Usado) {
+                card5.classList.add('used');
+                this.ui.status5.innerText = 'Canjeado';
+                this.ui.status5.className = 'benefit-status used';
+            } else if (puntos >= 5) {
+                card5.classList.add('available');
+                this.ui.status5.innerText = 'Disponible';
+                this.ui.status5.className = 'benefit-status available';
+            } else {
+                this.ui.status5.innerText = `${5 - puntos} sellos mas`;
+                this.ui.status5.className = 'benefit-status';
+            }
+        }
+
+        // Benefit 8 (final)
+        if (card8) {
+            card8.classList.remove('available');
+            if (puntos >= total) {
+                card8.classList.add('available');
+                this.ui.premio.innerText = 'Listo para canjear';
+                this.ui.premio.className = 'benefit-status available';
+            } else {
+                this.ui.premio.innerText = `${total - puntos} sellos mas`;
+                this.ui.premio.className = 'benefit-status';
+            }
+        }
     }
 
     dispararParticulas(targetElement) {
@@ -195,15 +250,16 @@ class BekiApp {
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
 
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 16; i++) {
             const p = document.createElement('div');
             p.className = 'particle';
+            p.style.background = this.particleColors[Math.floor(Math.random() * this.particleColors.length)];
             document.body.appendChild(p);
 
             const angle = Math.random() * Math.PI * 2;
-            const velocity = 25 + Math.random() * 35;
+            const velocity = 30 + Math.random() * 50;
             const tx = Math.cos(angle) * velocity;
-            const ty = Math.sin(angle) * velocity - 15; 
+            const ty = Math.sin(angle) * velocity - 20;
 
             p.style.left = centerX + 'px';
             p.style.top = centerY + 'px';
@@ -212,12 +268,67 @@ class BekiApp {
                 { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
                 { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`, opacity: 0 }
             ], {
-                duration: 600 + Math.random() * 300,
+                duration: 700 + Math.random() * 400,
                 easing: 'cubic-bezier(0, .9, .57, 1)',
                 fill: 'forwards'
             });
 
-            setTimeout(() => p.remove(), 1000); 
+            setTimeout(() => p.remove(), 1200);
+        }
+    }
+
+    dispararConfetti() {
+        const container = this.ui.confettiContainer;
+        const colors = this.particleColors;
+        const shapes = ['circle', 'square', 'triangle'];
+
+        for (let i = 0; i < 80; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = 8 + Math.random() * 8;
+            
+            confetti.style.width = size + 'px';
+            confetti.style.height = size + 'px';
+            confetti.style.background = color;
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = '-20px';
+            
+            if (shape === 'circle') {
+                confetti.style.borderRadius = '50%';
+            } else if (shape === 'triangle') {
+                confetti.style.width = '0';
+                confetti.style.height = '0';
+                confetti.style.background = 'transparent';
+                confetti.style.borderLeft = size/2 + 'px solid transparent';
+                confetti.style.borderRight = size/2 + 'px solid transparent';
+                confetti.style.borderBottom = size + 'px solid ' + color;
+            }
+
+            container.appendChild(confetti);
+
+            const duration = 2000 + Math.random() * 2000;
+            const delay = Math.random() * 500;
+
+            confetti.animate([
+                { 
+                    transform: `translateY(0) rotate(0deg)`, 
+                    opacity: 1 
+                },
+                { 
+                    transform: `translateY(${window.innerHeight + 50}px) rotate(${360 + Math.random() * 720}deg)`, 
+                    opacity: 0.8 
+                }
+            ], {
+                duration: duration,
+                delay: delay,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                fill: 'forwards'
+            });
+
+            setTimeout(() => confetti.remove(), duration + delay + 100);
         }
     }
 
@@ -244,7 +355,7 @@ class BekiApp {
     }
 
     cerrarSesion() {
-        if (this.unsubscribe) this.unsubscribe(); 
+        if (this.unsubscribe) this.unsubscribe();
         localStorage.removeItem('miTarjetaCafeTEL');
         location.reload();
     }
@@ -259,5 +370,5 @@ if ('serviceWorker' in navigator) {
 }
 
 window.onload = () => {
-    new BekiApp();
+    new BekiAppOp1();
 };
