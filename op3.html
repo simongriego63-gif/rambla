@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>beki - CAFE | Premium</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/styleop3.css">
+</head>
+<body>
+
+    <div class="grain-overlay"></div>
+
+    <div id="modalAlertaCustom" class="custom-modal-overlay">
+        <div class="custom-modal-box">
+            <div id="textoAlertaCustom" class="custom-modal-text">Mensaje de error</div>
+            <button id="btnCerrarAlerta" class="btn-modal-ok">Entendido</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <div id="pantallaSkeleton">
+            <div class="wallet-card">
+                <div class="card-header-skeleton">
+                    <div>
+                        <div class="skeleton-block" style="width: 100px; height: 28px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-block" style="width: 70px; height: 16px;"></div>
+                    </div>
+                    <div class="skeleton-block skeleton-circle-small"></div>
+                </div>
+                <div class="stamps-skeleton">
+                    <div class="stamps-grid-skeleton">
+                        <div class="skeleton-stamp"></div><div class="skeleton-stamp"></div>
+                        <div class="skeleton-stamp"></div><div class="skeleton-stamp"></div>
+                        <div class="skeleton-stamp"></div><div class="skeleton-stamp"></div>
+                        <div class="skeleton-stamp"></div><div class="skeleton-stamp"></div>
+                    </div>
+                </div>
+                <div class="skeleton-block" style="width: 100%; height: 80px; margin-bottom: 24px;"></div>
+                <div class="skeleton-block" style="width: 120px; height: 120px; margin: 0 auto; border-radius: 24px;"></div>
+            </div>
+        </div>
+
+        <div id="pantallaRegistro">
+            <div class="registro-card">
+                <div class="logo-container">
+                    <div class="logo-mark">
+                        <span class="logo-letter">b</span>
+                    </div>
+                    <div class="logo-wordmark">
+                        <span class="logo-name">beki</span>
+                        <span class="logo-divider"></span>
+                        <span class="logo-tagline">cafe</span>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="input-group">
+                        <label class="input-label">Nombre</label>
+                        <input type="text" id="inputNombre" class="input-box" placeholder="Tu nombre" required>
+                        <div class="input-line"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">WhatsApp</label>
+                        <input type="tel" id="inputCelular" class="input-box" placeholder="Tu numero" required>
+                        <div class="input-line"></div>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" id="btnCrearTarjeta">
+                    <span>Continuar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <button id="btnInstalarApp">Agregar a pantalla de inicio</button>
+            </div>
+        </div>
+
+        <div id="pantallaTarjeta">
+            
+            <div class="card-3d-container">
+                <div class="card-inner" id="cardInner">
+                    
+                    <div class="card-face card-front">
+                        <div class="wallet-card">
+                            <div class="card-header">
+                                <div class="brand-section">
+                                    <div class="mini-logo">b</div>
+                                    <div class="brand-text">
+                                        <span class="brand-name">beki</span>
+                                        <span class="brand-sub">cafe</span>
+                                    </div>
+                                </div>
+                                <button class="flip-trigger" id="btnFlipToBack" aria-label="Ver informacion">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 16v-4M12 8h.01"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="progress-section">
+                                <div class="progress-header">
+                                    <span class="progress-label">Tu progreso</span>
+                                    <span class="progress-count"><span id="displayPuntos">0</span> de 8</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                    <div class="progress-glow" id="progressGlow"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="stamps-container">
+                                <div class="stamps-grid" id="gridSellos"></div>
+                            </div>
+
+                            <div class="rewards-section">
+                                <div class="reward-item" data-reward="3">
+                                    <div class="reward-marker">3</div>
+                                    <div class="reward-info">
+                                        <span class="reward-title">15% descuento</span>
+                                        <span class="reward-status" id="refStatus3"></span>
+                                    </div>
+                                </div>
+                                <div class="reward-item" data-reward="5">
+                                    <div class="reward-marker">5</div>
+                                    <div class="reward-info">
+                                        <span class="reward-title">25% descuento</span>
+                                        <span class="reward-status" id="refStatus5"></span>
+                                    </div>
+                                </div>
+                                <div class="reward-item reward-final" data-reward="8">
+                                    <div class="reward-marker">8</div>
+                                    <div class="reward-info">
+                                        <span class="reward-title">Bebida gratis</span>
+                                        <span class="reward-status" id="refStatus8"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="status-bar">
+                                <span class="status-label">Estado</span>
+                                <span class="status-value" id="displayPremio">En progreso</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-face card-back">
+                        <div class="wallet-card back-content">
+                            <div class="back-header">
+                                <button class="flip-trigger" id="btnFlipToFront" aria-label="Volver">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                    </svg>
+                                </button>
+                                <span class="back-title">Tu tarjeta</span>
+                            </div>
+
+                            <div class="user-profile">
+                                <div class="user-avatar">
+                                    <span id="userInitial">B</span>
+                                </div>
+                                <div class="user-details">
+                                    <span class="user-name" id="displayNombre">...</span>
+                                    <span class="user-phone" id="displayTelLabel">******0000</span>
+                                </div>
+                            </div>
+
+                            <div class="qr-section">
+                                <div class="qr-frame">
+                                    <div class="qr-corner tl"></div>
+                                    <div class="qr-corner tr"></div>
+                                    <div class="qr-corner bl"></div>
+                                    <div class="qr-corner br"></div>
+                                    <img id="qrImage" src="" alt="QR Cliente">
+                                </div>
+                                <span class="qr-label">Muestra este codigo para sumar sellos</span>
+                            </div>
+
+                            <button id="btnCerrarSesion" class="btn-logout">Cerrar sesion</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="celebration-container" id="celebrationContainer"></div>
+
+    <script type="module" src="js/app-op3.js"></script>
+    
+</body>
+</html>
